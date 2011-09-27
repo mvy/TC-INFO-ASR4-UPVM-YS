@@ -63,8 +63,13 @@
 \end{itemize}
 
 \end{block}
+\end{frame}
 
-\begin{block}{Partie indépendante}
+\def\subsectitle{Partie indépendante}
+\subsection{\subsectitle}
+
+\begin{frame}{\sectitle}
+\begin{block}{\subsectitle}
 \begin{itemize}
     \item ordonnanceur-distributeur;
     \item gestion des processus;
@@ -72,8 +77,51 @@
     \item sous-système de fichier;
     \item gestion des entrées sorties (partie "haute").
 \end{itemize}
+\end{block}
+
+\def\subsectitle{Architecture UNIX}
+\subsection{\subsectitle}
+
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Portabilité;
+    \item Langage C;
+    \item Processus arborescents.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\def\sectitle{Les processus}
+\section{\sectitle}
+
+\begin{frame}
+
+\def\subsectitle{Définition}
+\subsection{\subsectitle}
+
+
+\begin{alertblock}{\subsectitle}
+\begin{itemize}
+    \item Entité associée par le noyau à l'exécution d'un programme. Un
+    programme peut être exécuté pare un utilisateur et peut avoir plusieurs
+    processus associés.
+\end{itemize}
+\end{alertblock}
+
+\def\subsectitle{Hiérarchie des processus}
+\subsection{\subsectitle}
+
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Hiérarchie arborescente;
+    \item Relation père-fils;
+    \item Processus \textit{init} (pid: 1), racine;
+    \item \textit{daemon} (cron, \dots).
+\end{itemize}
 
 \end{block}
+
+
 
 \end{frame}
 
