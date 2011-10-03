@@ -24,22 +24,63 @@
 
 \def\sectitle{Agenda}
 \section{\sectitle}
-\def\subsectitle{Plan du cours}
+\def\subsectitle{Plan du module}
 \subsection{\subsectitle}
 
 \begin{frame}{\sectitle}
 \begin{block}{\subsectitle}
 \begin{itemize}
-\item Système de gestion des fichiers
-\item Gestion des processus
-\item Gestion de la mémoire
-\item Communication TCP/IP
+\item Système de gestion des fichiers;
+\item Gestion des processus (Parallélisme, threads, ordonnancement);
+\item Synchronisation et concurrence;
+\item Gestion de la mémoire;
+\item Communications.
 \end{itemize}
 \end{block}
 \end{frame}
 
 \def\sectitle{Introduction}
 \section{\sectitle}
+
+
+
+
+\def\sectitle{Présentation générale d'un système d'exploitation}
+\section{\sectitle}
+
+\begin{frame}{\sectitle}
+
+\def\subsectitle{Définition}
+\subsection{\subsectitle}
+
+\begin{exampleblock}{\subsectitle}
+Extension logicielle du matériel dans le but d'offrir un service suffisant aux
+utilisateurs.
+\end{exampleblock}
+
+\def\subsectitle{Objectif}
+\subsection{\subsectitle}
+
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Masquer la complexité à l'utilisateur;
+    \item Faciliter l'accès aux ressources.
+\end{itemize}
+\end{block}
+
+\def\subsectitle{Types de systèmes d'exploitations}
+\subsection{\subsectitle}
+
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item mode d'exploitation différé;
+    \item mode interactif d'exploitation, temps partagé;
+    \item mode temps réel, système embarqués;
+    \item mono-tâche, multi-tâches.
+\end{itemize}
+\end{block}
+\end{frame}
+
 \def\subsectitle{Organisation d'un système d'exploitation}
 \subsection{\subsectitle}
 
@@ -79,6 +120,11 @@
 \end{itemize}
 \end{block}
 
+
+\end{frame}
+
+\begin{frame}{\sectitle}
+
 \def\subsectitle{Architecture UNIX}
 \subsection{\subsectitle}
 
@@ -89,41 +135,238 @@
     \item Processus arborescents.
 \end{itemize}
 \end{block}
-\end{frame}
 
-\def\sectitle{Les processus}
-\section{\sectitle}
-
-\begin{frame}
-
-\def\subsectitle{Définition}
-\subsection{\subsectitle}
-
-
-\begin{alertblock}{\subsectitle}
-\begin{itemize}
-    \item Entité associée par le noyau à l'exécution d'un programme. Un
-    programme peut être exécuté pare un utilisateur et peut avoir plusieurs
-    processus associés.
-\end{itemize}
-\end{alertblock}
-
-\def\subsectitle{Hiérarchie des processus}
+\def\subsectitle{Unix}
 \subsection{\subsectitle}
 
 \begin{block}{\subsectitle}
 \begin{itemize}
-    \item Hiérarchie arborescente;
-    \item Relation père-fils;
-    \item Processus \textit{init} (pid: 1), racine;
-    \item \textit{daemon} (cron, \dots).
+\item mono-tâche ou multi-tâches
+\item temps partagé
 \end{itemize}
-
 \end{block}
-
-
 
 \end{frame}
 
+
+\def\sectitle{Présentation du noyau}
+\section{\sectitle}
+\def\subsectitle{Modèle en couche}
+\subsection{\subsectitle}
+
+\begin{frame}{\sectitle}
+\begin{block}{\subsectitle}
+Le système peut se présenter comme un ensemble de couches.
+\end{block}
+
+\begin{center}
+\includegraphics[width=0.75\textwidth]{images/Couches.pdf}
+\end{center}
+
+\end{frame}
+
+
+
+
+\begin{frame}{\sectitle}
+
+\begin{columns}[b]
+
+\column{0.5\textwidth}
+\begin{block}{\subsectitle}
+\begin{itemize}
+\item Le noyau ou kernel constitue une interface entre le matériel est les programmes
+\item Il est lui même divisés en couches 
+\item Il est irremplaçable par l'utilisateur
+\item Il gère les processus, les périphériques, la mémoire
+\end{itemize}
+\end{block}
+
+\column{0.5\textwidth}
+\begin{center}
+\includegraphics[width=\textwidth]{images/NoyauCouches.pdf}
+\end{center}
+
+\end{columns}
+\end{frame}
+
+
+
+\begin{frame}{\sectitle}
+
+\def\subsectitle{Allocation de ressources}
+\subsection{\subsectitle}
+
+\begin{alertblock}{\subsectitle}
+\begin{itemize}
+    \item Rôle central du \textit{kernel} dans l'exécution des travaux:
+    \begin{itemize}
+        \item représentation et gestion des processus;
+        \item gestion des interruptions;
+        \item gestion des entrées, sorties.
+    \end{itemize}
+\end{itemize}
+\end{alertblock}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=\textwidth]{images/processFile.pdf}
+\end{center}
+\caption{Exemple de modèle d'allocation de l'UC}
+\end{figure}
+
+\end{frame}
+
+
+\begin{frame}{\sectitle}
+\def\subsectitle{Allocation de l'UC pour les systèmes mono-tâche}
+\subsection{\subsectitle}
+\begin{figure}
+\begin{center}
+\includegraphics[width=\textwidth]{images/monoTache.pdf}
+\end{center}
+\caption{\subsectitle}
+\end{figure}
+\end{frame}
+
+\begin{frame}{\sectitle}
+\def\subsectitle{Allocation de l'UC pour les systèmes multi-tâches}
+\subsection{\subsectitle}
+\begin{figure}
+\begin{center}
+\includegraphics[width=\textwidth]{images/multiTaches.pdf}
+\end{center}
+\caption{\subsectitle}
+\end{figure}
+
+\end{frame}
+
+\def\sectitle{Mécanisme de contrôle}
+\section{\sectitle}
+\begin{frame}{\sectitle}
+
+\def\subsectitle{Mécanismes}
+\subsection{\subsectitle}
+
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Les interruptions;
+    \item les appels systèmes;
+    \item les signaux horloge;
+    \item les primitives de synchronisation.
+\end{itemize}
+\end{block}
+
+
+\def\subsectitle{Les interruptions}
+\subsection{\subsectitle}
+
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Événement suffisamment important pour nécessiter une interruption du
+    système.
+    \item Rapide, immédiat.
+    \item généré aléatoirement par un périphérique ou par l'UC;
+    \item peut-être générée par le système en interne, on parle alors de
+    détournement.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\section{\sectitle}
+\begin{frame}{\sectitle}
+\def\subsectitle{Rôle des interruptions}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Imposer les changement d'état de l'UC;
+    \item Commutation de contexte, générée par une cause extérieur à
+    l'instruction en cours.
+\end{itemize}
+\end{block}
+
+\begin{alertblock}{\subsectitle}
+\begin{itemize}
+    \item L'UC doit être en mode interruptible;
+    \item L'interruption doit être prioritaire aux autres interruptions;
+\end{itemize}
+\end{alertblock}
+
+\end{frame}
+
+\begin{frame}{\sectitle}
+\def\subsectitle{Appel au superviseur - Définition}
+\subsection{\subsectitle}
+
+\begin{exampleblock}{\subsectitle}
+\begin{itemize}
+    \item Instruction qui a pour effet de provoquer une commutation de contexte
+    du processeur.
+\end{itemize}
+\end{exampleblock}
+
+\def\subsectitle{Appel au superviseur - Rôle}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Permettre l'appel depuis un programme d'une procédure du système
+    nécessitant des droits étendus.
+    \item Masquage interruption, \dots
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\def\subsectitle{Signaux d'horloge}
+\subsection{\subsectitle}
+
+\begin{frame}{\sectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Composant physique du système;
+    \item Essentiel car il rythme le système;
+    \item Génère des interruptions horloges.
+\end{itemize}
+\end{block}
+
+\begin{exampleblock}{\subsectitle}
+\begin{itemize}
+    \item Affectation du temps dans le mot horloge
+    \item Pendant l'activation du processus, le mot horloge est décrémenté de 1
+    à chaque signal;
+    \item Quand le mot vaut 0, un signal d'interruption est généré et le
+    superviseur prend un décision.
+\end{itemize}
+\end{exampleblock}
+
+\end{frame}
+
+
+\begin{frame}{\sectitle}
+\def\subsectitle{Primitives de synchronisation}
+\subsection{\subsectitle}
+
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Nécessaires à l'asynchronisme;
+    \item Nécessaire à la protection mutuelle;
+    \item Plus que de simples appels de procédures.
+\end{itemize}
+\end{block}
+
+\def\subsectitle{Exemple de l'exclusion mutuelle}
+\subsection{\subsectitle}
+
+\begin{exampleblock}{\subsectitle}
+\begin{itemize}
+    \item Deux processus A et B veulent mettre à jour le compte en banque
+    d'Alice
+    \item $C_{Alice} = C_{Alice} + Montant_{a}$ et $C_{Alice} = C_{Alice} +
+    Montant_{b}$
+    \item Quel est le résultat final ?
+\end{itemize}
+\end{exampleblock}
+
+\end{frame}
 
 \end{document}
