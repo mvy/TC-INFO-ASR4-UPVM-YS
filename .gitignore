@@ -8,6 +8,10 @@
 *.cmake
 *.swp
 *~
+*.rule
+
+TD*
+TP*
 
 Makefile
 CMakeFiles

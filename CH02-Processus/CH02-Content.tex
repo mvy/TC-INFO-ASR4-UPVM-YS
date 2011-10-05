@@ -597,4 +597,72 @@
 
 \end{frame}
 
+\def\sectitle{Files multiples}
+\section{\sectitle}
+\begin{frame}{\sectitle}
+\def\subsectitle{Principe}
+\subsection{\subsectitle}
+
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Division en groupe de processus (système, professeurs, étudiant, avant
+    plan, arrière-plan, \dots);
+    \item Différentes priorités par files (éventuellement quantum différents
+    aussi).
+\end{itemize}
+\end{block}
+
+
+\def\subsectitle{Caractérisiques}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Adapté à des contraintes particulières;
+    \item Priorité en fonction de l'importance des travaux (de manière
+    \textit{meta})
+    \item Généralement utile pour privilégier les processus dépendant d'entrées
+    sorties;
+    \item Un processus qui quitte volontairement l'UC garde sa file;
+    \item Lors des dépassements de quantum, on change le processus de file
+    (perte de priorité au profit d'un quantum plus long).
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+\begin{frame}{\sectitle}
+\begin{figure}
+
+\includegraphics[width=\textwidth]{images/multipleFiles.pdf}
+\end{figure}
+
+\end{frame}
+
+
+\begin{frame}{\sectitle}
+\begin{figure}
+\includegraphics[width=\textwidth]{images/multipleFilesQt.pdf}
+\end{figure}
+
+
+
+
+\end{frame}
+
+\def\sectitle{Fin}
+\section{\sectitle}
+
+\begin{frame}{\sectitle}
+\def\subsectitle{Suite}
+\subsection{\subsectitle}
+
+\begin{exampleblock}{\subsectitle}
+\begin{itemize}
+    \item TD: Processus et ordonnancement.
+\end{itemize}
+\end{exampleblock}
+
+\end{frame}
+
+
 \end{document}
