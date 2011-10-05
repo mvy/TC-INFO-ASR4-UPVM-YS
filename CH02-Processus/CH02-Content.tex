@@ -6,7 +6,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \title{Systèmes d'exploitation, 2ème année}
-\subtitle{Fichiers et processus}
+\subtitle{Processus et ordonnancement}
 
 \author{Yves \textsc{Stadler}}\institute{Université Paul Verlaine - Metz}
 
@@ -83,7 +83,7 @@
 \end{block}
 \end{frame}
 
-\def\sectitle{Modes}
+\def\sectitle{Modes et contexte}
 \section{\sectitle}
 
 \begin{frame}{\sectitle}
@@ -97,13 +97,6 @@
 \end{itemize}
 \end{block}
 
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\def\sectitle{Contexte}
-\section{\sectitle}
-
-\begin{frame}{\sectitle}
 
 \def\subsectitle{Deux contextes différents}
 \subsection{\subsectitle}
@@ -142,12 +135,13 @@
 \end{itemize}
 \end{exampleblock}
 
-\def\subsectitle{Deux mécanismes de gestion}
+\def\subsectitle{Mécanismes de gestion}
 \subsection{\subsectitle}
 
 \begin{block}{\subsectitle}
 \begin{itemize}
     \item Ordonnancement (\textit{scheduling}): choix des processus à activer;
+    \item Distribution (\textit{dispatcher}): activation des processus;
     \item Synchronisation: gestion des ressources partagées;
     \item Le \textit{Process Control Block}: structure qui représente l'état
     d'un processus (lorsqu'il n'est pas en mémoire).
@@ -160,6 +154,8 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\sectitle{Vision des états de processus court terme}
+\section{\sectitle}
 \begin{frame}{\sectitle}
 \begin{figure}
 \includegraphics[width=.9\textwidth]{images/StateSimple.pdf}
@@ -180,7 +176,7 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\def\sectitle{États d'un processus}
+\def\sectitle{Vision des états de processus long terme}
 \section{\sectitle}
 \begin{frame}{\sectitle}
 \begin{figure}
@@ -263,8 +259,8 @@
     \item \texttt{creat()} créer un fichier;
     \item \texttt{open()} ouvre un descripteur de fichier en lecture ;
     \item \texttt{close()} ferme le descripteur de fichier ;
-    \item \texttt{read()} read the file descriptor ;
-    \item \texttt{write()} write in the file descriptor ;
+    \item \texttt{read()} lit le descripteur de fichier;
+    \item \texttt{write()} écrit sur le descripteur de fichier;
 \end{itemize}
 \end{exampleblock}
 
@@ -292,14 +288,22 @@
 \begin{itemize}
     \item Choisir les processus qui vont accéder au CPU
     \item Lorsqu'il faut gérer de la mémoire virtuelle, l'ordonnancement se
-    fait à deux niveaux
+    fait à plusieurs niveaux
     \begin{itemize}
-        \item Haut niveau: sélection les prochain processus à charger en mémoire
-        \item Bas niveau : sélectionne le processus qui accède au CPU parmi ceux
-        qui sont prêts.
+        \item Long terme (Long-term/admission scheduler): sélectionne les prochains
+        processus à charger en mémoire;
+        \item Moyen terme (Medium-term scheduler): sélectionne les processus qui
+        vont être temporairement enlevés de la mémoire centrale (défaut de
+        page \dots);
+        \item Court terme (Short-term scheduler) : sélectionne le processus qui
+        accède au CPU parmi ceux qui sont prêts (Le dispatcher les activera.).
     \end{itemize}
 \end{itemize}
 \end{block}
+\end{frame}
+
+\begin{frame}{\sectitle}
+\section{\sectitle}
 
 \def\subsectitle{Les files d'attentes}
 \subsection{\subsectitle}
@@ -308,13 +312,23 @@
 \begin{itemize}
     \item Un ordonnanceur gère plusieurs files d'attentes: 
     \begin{itemize}
-        \item Processus prêts;
-        \item Processus en attente d'entrée / sortie.
+        \item processus prêts;
+        \item processus en attente d'entrée / sortie.
     \end{itemize}
     \item La question est: comment insère-t-on un processus dans une file et
     \item comment un processus passe d'une file au CPU.
 \end{itemize}
 \end{block}
+
+\begin{exampleblock}{\subsectitle}
+\begin{itemize}
+    \item Traitement par flots;
+    \item Multi-programmation;
+    \item Temps partagé;
+    \item Mémoire virtuelle.
+\end{itemize}
+\end{exampleblock}
+
 \end{frame}
 
 \def\sectitle{Traitement par flots}
@@ -435,8 +449,8 @@
 \begin{block}{\subsectitle}
 \begin{itemize}
     \item Critères d'ordonnancement;
-    \item First In First Out;
-    \item Shortest Job First;
+    \item First In First Out (FIFO) a.k.a. First Come First Served (FCFS);
+    \item Shortest Job First (SJF);
     \item Round Robin;
     \item Listes multiples;
     \item Évaluations.
@@ -514,6 +528,14 @@
 \includegraphics[width=\textwidth]{images/FIFO.pdf}
 \end{figure}
 
+\begin{exampleblock}{\subsectitle}
+\begin{itemize}
+    \item Changement de contexte à la fin du processus. Pas de réorganisation;
+    \item Les longs processus peuvent accaparer le processeur;
+    \item Problèmes lorsque certains processus ne se terminent pas.
+\end{itemize}
+\end{exampleblock}
+
 \end{frame}
 
 
@@ -526,11 +548,13 @@
 
 \begin{block}{\subsectitle}
 \begin{itemize}
-    \item La tâche la plus courte à la priorité
+    \item La tâche la plus courte à la priorité (un autre processus \emph{peut}
+    être interrompu).
     \item Les processus sont triés en fonction du nombre d'unités CPU qu'il
-    requiert.
+    requiert;
     \item En cas d'égalité : FIFO.
-    \item Comment connait-on le temps CPU des processus?
+    \item Comment connait-on le temps CPU des processus ?
+    \item Famines possibles.
 \end{itemize}
 \end{block}
 
@@ -582,6 +606,23 @@
 \end{itemize}
 \end{exampleblock}
 
+
+\def\subsectitle{Caractérisiques}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Meilleur que FIFO car les processus se terminent plus vite (pas de
+    blocage pour un seul processus);
+    \item Meilleur que SJF car les processus longs ne sont plus pénaliser;
+    \item Le temps d'attente dépend du nombre de processus;
+    \item Famine impossible;
+    \item Difficilement exploitable en temps-réel (deadlines).
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+\begin{frame}{\sectitle}
 \def\subsectitle{Quel quantum choisir}
 \subsection{\subsectitle}
 
@@ -594,6 +635,56 @@
     \item Unix utilise 100ms.
 \end{itemize}
 \end{alertblock}
+
+\end{frame}
+
+
+\def\sectitle{Files multiples}
+\section{\sectitle}
+\begin{frame}{\sectitle}
+\def\subsectitle{Principe}
+\subsection{\subsectitle}
+
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Division en groupe de processus (système, professeurs, étudiant, avant
+    plan, arrière-plan, \dots);
+    \item Différentes priorités par files (éventuellement quantum différents
+    aussi).
+\end{itemize}
+\end{block}
+
+
+\def\subsectitle{Caractérisiques}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Adapté à des contraintes particulières;
+    \item Priorité en fonction de l'importance des travaux (de manière
+    \textit{meta})
+    \item Généralement utile pour privilégier les processus dépendant d'entrées
+    sorties;
+    \item Un processus qui quitte volontairement l'UC garde sa file;
+    \item Lors des dépassements de quantum, on change le processus de file
+    (perte de priorité au profit d'un quantum plus long).
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+\begin{frame}{\sectitle}
+\begin{figure}
+
+\includegraphics[width=\textwidth]{images/multipleFiles.pdf}
+\end{figure}
+
+\end{frame}
+
+
+\begin{frame}{\sectitle}
+\begin{figure}
+\includegraphics[width=\textwidth]{images/multipleFilesQt.pdf}
+\end{figure}
 
 \end{frame}
 

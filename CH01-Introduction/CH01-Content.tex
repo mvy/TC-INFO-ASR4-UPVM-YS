@@ -6,7 +6,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \title{Systèmes d'exploitation, 2ème année}
-\subtitle{Fichiers et processus}
+\subtitle{Introduction générale}
 
 \author{Yves \textsc{Stadler}}\institute{Université Paul Verlaine - Metz}
 
@@ -22,78 +22,58 @@
 \titlepage
 \end{frame}
 
+
+\def\sectitle{Contact}
+\section{\sectitle}
+\begin{frame}{\sectitle}
+\def\subsectitle{Yves Stadler}
+\subsection{\subsectitle}
+
+\begin{columns}[c]
+
+\column{.25\textwidth}
+\begin{figure}
+\includegraphics[width=\textwidth]{images/yves.png}
+\end{figure}
+
+\column{.75\textwidth}
+\begin{block}{\subsectitle}
+\begin{itemize}
+\item A.T.E.R. IUT de Metz et doctorant au LITA;
+\item Bureau B3.13;
+\item \url{yves.stadler@univ-metz.fr};
+\item \url{github.com/mvy/TC-INFO-ASR4-UPVM-YS}.
+\end{itemize}
+\end{block}
+
+\end{columns}
+
+\end{frame}
+
 \def\sectitle{Agenda}
 \section{\sectitle}
-\def\subsectitle{Plan du cours}
+\def\subsectitle{Plan du module}
 \subsection{\subsectitle}
 
 \begin{frame}{\sectitle}
 \begin{block}{\subsectitle}
 \begin{itemize}
-\item Système de gestion des fichiers
-\item Gestion des processus
-\item Gestion de la mémoire
-\item Communication TCP/IP
+\item Système de gestion des fichiers;
+\item Gestion des processus (Parallélisme, threads, ordonnancement);
+\item Synchronisation et concurrence;
+\item Gestion de la mémoire;
+\item Communications.
 \end{itemize}
 \end{block}
 \end{frame}
 
 \def\sectitle{Introduction}
 \section{\sectitle}
-\def\subsectitle{Organisation d'un système d'exploitation}
-\subsection{\subsectitle}
-
-
-\begin{frame}{\sectitle}
-\begin{block}{\subsectitle}
-\begin{itemize}
-    \item Chaque système est basé sur un noyau (\textit{kernel});
-    \item La noyau comprend deux parties : indépendante du matériel, dépendante
-    du matériel;
-\end{itemize}
-\end{block}
-
-\def\subsectitle{Partie dépendante}
-\subsection{\subsectitle}
-\begin{block}{\subsectitle}
-\begin{itemize}
-    \item gestion des interruptions;
-    \item gestion mémoire;
-    \item gestion des entrées sorties (E/S; IO).
-\end{itemize}
-
-\end{block}
-\end{frame}
-
-\def\subsectitle{Partie indépendante}
-\subsection{\subsectitle}
-
-\begin{frame}{\sectitle}
-\begin{block}{\subsectitle}
-\begin{itemize}
-    \item ordonnanceur-distributeur;
-    \item gestion des processus;
-    \item paginiation, va-et-vient;
-    \item sous-système de fichier;
-    \item gestion des entrées sorties (partie "haute").
-\end{itemize}
-\end{block}
-
-\def\subsectitle{Architecture UNIX}
-\subsection{\subsectitle}
-
-\begin{block}{\subsectitle}
-\begin{itemize}
-    \item Portabilité;
-    \item Langage C;
-    \item Processus arborescents.
-\end{itemize}
-\end{block}
-\end{frame}
 
 
 
-\def\sectitle{Présentation général d'un système d'exploitation}
+
+\def\sectitle{Présentation générale d'un système d'exploitation}
 \section{\sectitle}
 
 \begin{frame}{\sectitle}
@@ -121,35 +101,68 @@ utilisateurs.
 
 \begin{block}{\subsectitle}
 \begin{itemize}
-    \item mode d'exploitation différé;
-    \item mode interactif d'exploitation, temps partagé;
-    \item mode temps réel, système embarqués;
-    \item mono-tâche, multi-tâches.
+    \item Mode d'exploitation différé;
+    \item Mode interactif d'exploitation, temps partagé;
+    \item Mode temps réel, système embarqués;
+    \item Mono-tâche, multi-tâches.
 \end{itemize}
 \end{block}
 \end{frame}
 
-\begin{frame}{\sectitle}
-\def\subsectitle{Unix}
+\def\subsectitle{Organisation d'un système d'exploitation}
 \subsection{\subsectitle}
 
+
+\begin{frame}{\sectitle}
 \begin{block}{\subsectitle}
 \begin{itemize}
-\item mono-tâche ou multi-tâches
-\item temps partagé
+    \item Chaque système est basé sur un noyau (\textit{kernel});
+    \item La noyau comprend deux parties : indépendante du matériel, dépendante
+    du matériel;
 \end{itemize}
 \end{block}
 
+\def\subsectitle{Partie dépendante}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Gestion des interruptions;
+    \item Gestion mémoire;
+    \item Gestion des entrées sorties (E/S; IO).
+\end{itemize}
+
+\end{block}
 \end{frame}
 
-\def\sectitle{Organisation}
+\def\subsectitle{Partie indépendante}
+\subsection{\subsectitle}
+
+\begin{frame}{\sectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Ordonnanceur-distributeur;
+    \item Gestion des processus;
+    \item Paginiation, va-et-vient;
+    \item Sous-système de fichier;
+    \item Gestion des entrées sorties (partie "haute").
+\end{itemize}
+\end{block}
+
+
+\end{frame}
+
+\def\sectitle{Présentation général d'un système d'exploitation}
 \section{\sectitle}
 \def\subsectitle{Modèle en couche}
 \subsection{\subsectitle}
 
 \begin{frame}{\sectitle}
 \begin{block}{\subsectitle}
-Le système peut se présenter comme un ensemble de couches.
+
+\begin{itemize}
+    \item Le système peut se présenter comme un ensemble de couches.
+\end{itemize}
+
 \end{block}
 
 \begin{center}
@@ -159,8 +172,7 @@ Le système peut se présenter comme un ensemble de couches.
 \end{frame}
 
 
-\def\sectitle{Présentation du noyau}
-\section{\sectitle}
+
 
 \begin{frame}{\sectitle}
 
@@ -183,8 +195,6 @@ Le système peut se présenter comme un ensemble de couches.
 
 \end{columns}
 \end{frame}
-
-
 
 \begin{frame}{\sectitle}
 
@@ -235,6 +245,87 @@ Le système peut se présenter comme un ensemble de couches.
 
 \end{frame}
 
+\def\sectitle{Rappel sur les processus}
+\section{\sectitle}
+
+\def\subsectitle{L'espace de travail}
+\subsection{\subsectitle}
+\begin{frame}{\sectitle}
+\begin{columns}[c]
+\column{0.7\textwidth}
+\begin{block}{\subsectitle}
+\begin{itemize}
+\item L'espace de travail est l'ensemble des données en mémoire nécessaires à l'exécution du processus.
+\item Le code : en langage ASM, liste des instruction pour le processeurs (Pointeur: Compteur Ordinal)
+\item La pile (stack): mémoire prévu pour les appels de fonctions. Last In First
+Out. Données statiques.
+\item Le tas (heap): mémoire réservée pour l'allocation dynamique. Pas d'ordre
+particulier d'allocation. Données dynamiques.
+\end{itemize}
+\end{block}
+\column{0.3\textwidth}
+
+\includegraphics[width=\textwidth]{images/Workspace.pdf}
+\end{columns}
+\end{frame}
+
+\def\subsectitle{La zone u(tilisateur)}
+\subsection{\subsectitle}
+\begin{frame}{\sectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+\item Données privées du processus. Seule la zone u du processus en cours est
+manipulable. (struct user <sys/user.h>). Son adresse se trouve dans le mot état.
+\begin{itemize}
+\item pointeur sur la structure de processus de la table des processus. 
+\item uid réel et effectif
+\item compteurs des temps (users et system) consommés
+\item masque de signaux
+\item terminal de contrôle du processus si celui-ci existe. 
+\item dernière erreur rencontrée pendant un appel système. 
+\item valeur de retour du dernier appel système. 
+\item Entrées sorties (structures associées aux entrées-sorties)
+\item "." et "/" (le répertoire courant et la racine courante (c.f. chroot()) 
+\item La table des descripteurs (fichiers ouverts)
+\item Limites de la taille des fichiers de la mémoire utilisable
+\item Umask (masque de création de fichiers)
+\end{itemize}
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+
+
+
+\begin{frame}{\sectitle}
+\def\subsectitle{Contexte}
+\subsection{\subsectitle}
+
+\begin{block}{\subsectitle}
+\begin{itemize}
+\item Son état
+\item Son mot d'état: en particulier
+          (La valeur des registres actifs; Le compteur ordinal )
+\item Les valeurs des variables globales statiques ou dynamiques
+\item Son entrée dans la table des processus
+\item Sa zone u
+\item Les piles user et system
+\item Les zones de code et de données. 
+\end{itemize}
+\end{block}
+
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Lorsqu'un nouveau processus va être exécuté, il y a commutation du mot
+    d'état et changement de contexte. Ces changements sont dictés par
+    l'ordonnanceur.
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+
 \def\sectitle{Mécanisme de contrôle}
 \section{\sectitle}
 \begin{frame}{\sectitle}
@@ -245,9 +336,9 @@ Le système peut se présenter comme un ensemble de couches.
 \begin{block}{\subsectitle}
 \begin{itemize}
     \item Les interruptions;
-    \item les appels systèmes;
-    \item les signaux horloge;
-    \item les primitives de synchronisation.
+    \item Les appels systèmes;
+    \item Les signaux horloge;
+    \item Les primitives de synchronisation.
 \end{itemize}
 \end{block}
 
@@ -260,8 +351,8 @@ Le système peut se présenter comme un ensemble de couches.
     \item Événement suffisamment important pour nécessiter une interruption du
     système.
     \item Rapide, immédiat.
-    \item généré aléatoirement par un périphérique ou par l'UC;
-    \item peut-être générée par le système en interne, on parle alors de
+    \item Généré aléatoirement par un périphérique ou par l'UC;
+    \item Peut être générée par le système en interne, on parle alors de
     détournement.
 \end{itemize}
 \end{block}
@@ -305,7 +396,7 @@ Le système peut se présenter comme un ensemble de couches.
 \begin{itemize}
     \item Permettre l'appel depuis un programme d'une procédure du système
     nécessitant des droits étendus.
-    \item Masquage interruption, \dots
+    \item Masquage interruption, allocation de mémoire \dots
 \end{itemize}
 \end{block}
 \end{frame}
@@ -359,10 +450,25 @@ Le système peut se présenter comme un ensemble de couches.
     \item $C_{Alice} = C_{Alice} + Montant_{a}$ et $C_{Alice} = C_{Alice} +
     Montant_{b}$
     \item Quel est le résultat final ?
+
 \end{itemize}
 \end{exampleblock}
 
 \end{frame}
 
+\def\sectitle{Fin}
+\section{\sectitle}
+
+\begin{frame}{\sectitle}
+\def\subsectitle{Suite}
+\subsection{\subsectitle}
+
+\begin{exampleblock}{\subsectitle}
+\begin{itemize}
+    \item Processus et ordonnancement.
+\end{itemize}
+\end{exampleblock}
+
+\end{frame}
 
 \end{document}
