@@ -241,6 +241,95 @@ Le système peut se présenter comme un ensemble de couches.
 
 \end{frame}
 
+
+\def\sectitle{Rappel sur les processus}
+\section{\sectitle}
+
+\def\subsectitle{L'espace de travail}
+\subsection{\subsectitle}
+\begin{frame}{\sectitle}
+\begin{columns}[c]
+\column{0.7\textwidth}
+\begin{block}{\subsectitle}
+\begin{itemize}
+\item L'espace de travail est l'ensemble des données en mémoire nécessaires à l'exécution du processus.
+\item Le code : en langage ASM, liste des instruction pour le processeurs (Pointeur: Compteur Ordinal)
+\item Les données (le tas / heap) Ensemble des variables
+(globales/statiques/dynamiques) remplissage vers le bas
+\item La pile (stack) variables des appels de fonctions (inputs, valeur avant
+appel (co)...) remplissage vers le haut.
+\end{itemize}
+\end{block}
+\column{0.3\textwidth}
+
+\includegraphics[width=\textwidth]{images/Workspace.pdf}
+\end{columns}
+\end{frame}
+
+\def\subsectitle{La zone u}
+\subsection{\subsectitle}
+\begin{frame}{\sectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+\item Données privées du processus. Seule la zone u du processus en cours est
+manipulable. (struct user <sys/user.h>). Son adresse se trouve dans le mot état.
+\begin{itemize}
+\item pointeur sur la structure de processus de la table des processus. 
+\item uid réel et effectif
+\item Compteurs des temps (users et system) consommés
+\item Masque de signaux
+\item Terminal de contrôle du processus si celui-ci existe. 
+\item Dernière erreur rencontrée pendant un appel système. 
+\item Valeur de retour du dernier appel système. 
+
+\end{itemize}
+\end{itemize}
+
+\end{block}
+\end{frame}
+
+
+\begin{frame}{\sectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+\item E/S (les structures associées aux entrées-sorties)
+\item "." et "/" (le répertoire courant et la racine courante (c.f. chroot()) 
+\item La table des descripteurs
+\item Limites de la taille des fichiers de la mémoire utilisable
+\item umask (masque de création de fichiers)
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+
+
+
+\begin{frame}{\sectitle}
+\def\subsectitle{Contexte}
+\subsection{\subsectitle}
+
+\begin{block}{\subsectitle}
+\begin{itemize}
+\item son état
+\item son mot d'état: en particulier
+          (La valeur des registres actifs; Le compteur ordinal )
+\item les valeurs des variables globales statiques ou dynamiques
+\item son entrée dans la table des processus
+\item sa zone u
+\item Les piles user et system
+\item les zones de code et de données. 
+\end{itemize}
+\end{block}
+
+\begin{block}{\subsectitle}
+Lorsqu'un nouveau processus va être exécuté, il y a commutation du mot d'état et changement de contexte.
+Ces changements sont dictés par l'ordonnanceur.
+\end{block}
+\end{frame}
+
+
+
 \def\sectitle{Mécanisme de contrôle}
 \section{\sectitle}
 \begin{frame}{\sectitle}
@@ -365,6 +454,21 @@ Le système peut se présenter comme un ensemble de couches.
     \item $C_{Alice} = C_{Alice} + Montant_{a}$ et $C_{Alice} = C_{Alice} +
     Montant_{b}$
     \item Quel est le résultat final ?
+\end{itemize}
+\end{exampleblock}
+
+\end{frame}
+
+\def\sectitle{Fin}
+\section{\sectitle}
+
+\begin{frame}{\sectitle}
+\def\subsectitle{Suite}
+\subsection{\subsectitle}
+
+\begin{exampleblock}{\subsectitle}
+\begin{itemize}
+    \item Processus et ordonnancement.
 \end{itemize}
 \end{exampleblock}
 
