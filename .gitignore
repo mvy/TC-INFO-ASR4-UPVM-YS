@@ -6,11 +6,12 @@
 *.out
 *.snm
 *.cmake
-<<<<<<< HEAD
-=======
 *.swp
 *~
->>>>>>> 5b123f8ab7a9ba24c347d48664df2d615af36852
+*.rule
+
+TD*
+TP*
 
 Makefile
 CMakeFiles
