@@ -6,7 +6,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \title{Systèmes d'exploitation, 2ème année}
-\subtitle{Fichiers et processus}
+\subtitle{Introduction générale}
 
 \author{Yves \textsc{Stadler}}\institute{Université Paul Verlaine - Metz}
 
@@ -20,6 +20,34 @@
 %%
 \begin{frame}
 \titlepage
+\end{frame}
+
+
+\def\sectitle{Contact}
+\section{\sectitle}
+\begin{frame}{\sectitle}
+\def\subsectitle{Yves Stadler}
+\subsection{\subsectitle}
+
+\begin{columns}[c]
+
+\column{.25\textwidth}
+\begin{figure}
+\includegraphics[width=\textwidth]{images/yves.png}
+\end{figure}
+
+\column{.75\textwidth}
+\begin{block}{\subsectitle}
+\begin{itemize}
+\item A.T.E.R. IUT de Metz et doctorant au LITA;
+\item Bureau B3.13;
+\item \url{yves.stadler@univ-metz.fr};
+\item \url{github.com/mvy/TC-INFO-ASR4-UPVM-YS}.
+\end{itemize}
+\end{block}
+
+\end{columns}
+
 \end{frame}
 
 \def\sectitle{Agenda}
@@ -73,10 +101,10 @@ utilisateurs.
 
 \begin{block}{\subsectitle}
 \begin{itemize}
-    \item mode d'exploitation différé;
-    \item mode interactif d'exploitation, temps partagé;
-    \item mode temps réel, système embarqués;
-    \item mono-tâche, multi-tâches.
+    \item Mode d'exploitation différé;
+    \item Mode interactif d'exploitation, temps partagé;
+    \item Mode temps réel, système embarqués;
+    \item Mono-tâche, multi-tâches.
 \end{itemize}
 \end{block}
 \end{frame}
@@ -98,9 +126,9 @@ utilisateurs.
 \subsection{\subsectitle}
 \begin{block}{\subsectitle}
 \begin{itemize}
-    \item gestion des interruptions;
-    \item gestion mémoire;
-    \item gestion des entrées sorties (E/S; IO).
+    \item Gestion des interruptions;
+    \item Gestion mémoire;
+    \item Gestion des entrées sorties (E/S; IO).
 \end{itemize}
 
 \end{block}
@@ -112,51 +140,29 @@ utilisateurs.
 \begin{frame}{\sectitle}
 \begin{block}{\subsectitle}
 \begin{itemize}
-    \item ordonnanceur-distributeur;
-    \item gestion des processus;
-    \item paginiation, va-et-vient;
-    \item sous-système de fichier;
-    \item gestion des entrées sorties (partie "haute").
+    \item Ordonnanceur-distributeur;
+    \item Gestion des processus;
+    \item Paginiation, va-et-vient;
+    \item Sous-système de fichier;
+    \item Gestion des entrées sorties (partie "haute").
 \end{itemize}
 \end{block}
 
 
 \end{frame}
 
-\begin{frame}{\sectitle}
-
-\def\subsectitle{Architecture UNIX}
-\subsection{\subsectitle}
-
-\begin{block}{\subsectitle}
-\begin{itemize}
-    \item Portabilité;
-    \item Langage C;
-    \item Processus arborescents.
-\end{itemize}
-\end{block}
-
-\def\subsectitle{Unix}
-\subsection{\subsectitle}
-
-\begin{block}{\subsectitle}
-\begin{itemize}
-\item mono-tâche ou multi-tâches
-\item temps partagé
-\end{itemize}
-\end{block}
-
-\end{frame}
-
-
-\def\sectitle{Présentation du noyau}
+\def\sectitle{Présentation général d'un système d'exploitation}
 \section{\sectitle}
 \def\subsectitle{Modèle en couche}
 \subsection{\subsectitle}
 
 \begin{frame}{\sectitle}
 \begin{block}{\subsectitle}
-Le système peut se présenter comme un ensemble de couches.
+
+\begin{itemize}
+    \item Le système peut se présenter comme un ensemble de couches.
+\end{itemize}
+
 \end{block}
 
 \begin{center}
@@ -189,8 +195,6 @@ Le système peut se présenter comme un ensemble de couches.
 
 \end{columns}
 \end{frame}
-
-
 
 \begin{frame}{\sectitle}
 
@@ -241,7 +245,6 @@ Le système peut se présenter comme un ensemble de couches.
 
 \end{frame}
 
-
 \def\sectitle{Rappel sur les processus}
 \section{\sectitle}
 
@@ -254,10 +257,10 @@ Le système peut se présenter comme un ensemble de couches.
 \begin{itemize}
 \item L'espace de travail est l'ensemble des données en mémoire nécessaires à l'exécution du processus.
 \item Le code : en langage ASM, liste des instruction pour le processeurs (Pointeur: Compteur Ordinal)
-\item Les données (le tas / heap) Ensemble des variables
-(globales/statiques/dynamiques) remplissage vers le bas
-\item La pile (stack) variables des appels de fonctions (inputs, valeur avant
-appel (co)...) remplissage vers le haut.
+\item La pile (stack): mémoire prévu pour les appels de fonctions. Last In First
+Out. Données statiques.
+\item Le tas (heap): mémoire réservée pour l'allocation dynamique. Pas d'ordre
+particulier d'allocation. Données dynamiques.
 \end{itemize}
 \end{block}
 \column{0.3\textwidth}
@@ -266,7 +269,7 @@ appel (co)...) remplissage vers le haut.
 \end{columns}
 \end{frame}
 
-\def\subsectitle{La zone u}
+\def\subsectitle{La zone u(tilisateur)}
 \subsection{\subsectitle}
 \begin{frame}{\sectitle}
 \begin{block}{\subsectitle}
@@ -276,27 +279,17 @@ manipulable. (struct user <sys/user.h>). Son adresse se trouve dans le mot état
 \begin{itemize}
 \item pointeur sur la structure de processus de la table des processus. 
 \item uid réel et effectif
-\item Compteurs des temps (users et system) consommés
-\item Masque de signaux
-\item Terminal de contrôle du processus si celui-ci existe. 
-\item Dernière erreur rencontrée pendant un appel système. 
-\item Valeur de retour du dernier appel système. 
-
-\end{itemize}
-\end{itemize}
-
-\end{block}
-\end{frame}
-
-
-\begin{frame}{\sectitle}
-\begin{block}{\subsectitle}
-\begin{itemize}
-\item E/S (les structures associées aux entrées-sorties)
+\item compteurs des temps (users et system) consommés
+\item masque de signaux
+\item terminal de contrôle du processus si celui-ci existe. 
+\item dernière erreur rencontrée pendant un appel système. 
+\item valeur de retour du dernier appel système. 
+\item Entrées sorties (structures associées aux entrées-sorties)
 \item "." et "/" (le répertoire courant et la racine courante (c.f. chroot()) 
-\item La table des descripteurs
+\item La table des descripteurs (fichiers ouverts)
 \item Limites de la taille des fichiers de la mémoire utilisable
-\item umask (masque de création de fichiers)
+\item Umask (masque de création de fichiers)
+\end{itemize}
 \end{itemize}
 \end{block}
 \end{frame}
@@ -311,20 +304,23 @@ manipulable. (struct user <sys/user.h>). Son adresse se trouve dans le mot état
 
 \begin{block}{\subsectitle}
 \begin{itemize}
-\item son état
-\item son mot d'état: en particulier
+\item Son état
+\item Son mot d'état: en particulier
           (La valeur des registres actifs; Le compteur ordinal )
-\item les valeurs des variables globales statiques ou dynamiques
-\item son entrée dans la table des processus
-\item sa zone u
+\item Les valeurs des variables globales statiques ou dynamiques
+\item Son entrée dans la table des processus
+\item Sa zone u
 \item Les piles user et system
-\item les zones de code et de données. 
+\item Les zones de code et de données. 
 \end{itemize}
 \end{block}
 
 \begin{block}{\subsectitle}
-Lorsqu'un nouveau processus va être exécuté, il y a commutation du mot d'état et changement de contexte.
-Ces changements sont dictés par l'ordonnanceur.
+\begin{itemize}
+    \item Lorsqu'un nouveau processus va être exécuté, il y a commutation du mot
+    d'état et changement de contexte. Ces changements sont dictés par
+    l'ordonnanceur.
+\end{itemize}
 \end{block}
 \end{frame}
 
@@ -340,9 +336,9 @@ Ces changements sont dictés par l'ordonnanceur.
 \begin{block}{\subsectitle}
 \begin{itemize}
     \item Les interruptions;
-    \item les appels systèmes;
-    \item les signaux horloge;
-    \item les primitives de synchronisation.
+    \item Les appels systèmes;
+    \item Les signaux horloge;
+    \item Les primitives de synchronisation.
 \end{itemize}
 \end{block}
 
@@ -355,8 +351,8 @@ Ces changements sont dictés par l'ordonnanceur.
     \item Événement suffisamment important pour nécessiter une interruption du
     système.
     \item Rapide, immédiat.
-    \item généré aléatoirement par un périphérique ou par l'UC;
-    \item peut-être générée par le système en interne, on parle alors de
+    \item Généré aléatoirement par un périphérique ou par l'UC;
+    \item Peut être générée par le système en interne, on parle alors de
     détournement.
 \end{itemize}
 \end{block}
@@ -400,7 +396,7 @@ Ces changements sont dictés par l'ordonnanceur.
 \begin{itemize}
     \item Permettre l'appel depuis un programme d'une procédure du système
     nécessitant des droits étendus.
-    \item Masquage interruption, \dots
+    \item Masquage interruption, allocation de mémoire \dots
 \end{itemize}
 \end{block}
 \end{frame}
@@ -417,6 +413,7 @@ Ces changements sont dictés par l'ordonnanceur.
     \item Génère des interruptions horloges.
 \end{itemize}
 \end{block}
+
 
 \begin{exampleblock}{\subsectitle}
 \begin{itemize}
@@ -453,6 +450,7 @@ Ces changements sont dictés par l'ordonnanceur.
     \item $C_{Alice} = C_{Alice} + Montant_{a}$ et $C_{Alice} = C_{Alice} +
     Montant_{b}$
     \item Quel est le résultat final ?
+
 \end{itemize}
 \end{exampleblock}
 
