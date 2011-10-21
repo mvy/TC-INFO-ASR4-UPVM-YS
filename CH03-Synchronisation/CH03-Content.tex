@@ -276,8 +276,6 @@ ou occupée
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\def\sectitle{}
-\section{\sectitle}
 \begin{frame}[containsverbatim]{\sectitle}
 \begin{exampleblock}{\subsectitle}
 \begin{verbatim}
@@ -296,6 +294,8 @@ resource_status = FREE;
 \end{alertblock}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\sectitle{Test set and Lock}
+\section{\subsectitle}
 \def\subsectitle{Instruction TSL}
 \subsection{\subsectitle}
 \begin{frame}[containsverbatim]{\sectitle}
@@ -304,6 +304,7 @@ resource_status = FREE;
     \item Test Set and Lock
     \item L'instruction garantit l'atomicité de l'opération de test et
     d'affectation.
+    \item 0: bloqué, 1: libre.
 \end{itemize}
 \end{block}
 
@@ -340,12 +341,13 @@ quit:
 \begin{block}{\subsectitle}
 \begin{itemize}
 \item Méthode de l'alternance
+\item Algorithme de Dekker
 \item Algorithme de Peterson
 \end{itemize}
 \end{block}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\def\sectitle{}
+\def\sectitle{Alternance}
 \section{\sectitle}
 \begin{frame}[containsverbatim]{\sectitle}
 \def\subsectitle{Alternance version 1}
@@ -368,6 +370,8 @@ turn = 1 - t; //1 or 0
 \end{alertblock}
 \end{frame}
 
+\def\sectitle{Dekker's algorithm}
+\section{\sectitle}
 \begin{frame}[containsverbatim]{\sectitle}
 \def\subsectitle{Alternance version 2}
 \subsection{\subsectitle}
@@ -395,7 +399,7 @@ flag[t] = false;
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\def\sectitle{}
+\def\sectitle{Peterson}
 \section{\sectitle}
 \begin{frame}[containsverbatim]{\sectitle}
 \def\subsectitle{Peterson's algorithm}
