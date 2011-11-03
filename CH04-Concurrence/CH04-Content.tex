@@ -6,7 +6,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \title{Systèmes d'exploitation, 2ème année}
-\subtitle{Fichiers et processus}
+\subtitle{Deadlock et famine}
 
 \author{Yves \textsc{Stadler}}\institute{Université Paul Verlaine - Metz}
 
@@ -168,8 +168,7 @@ V(semA)
     \item Obliger les processus à réclamer toutes leurs ressources en une fois
     (risque de famine)
     \item Refuser la rétention (si une ressource est refusée, on relâche tout)
-    \item Définir un ordre dans l'attribution de ressources (peut-être moins
-    efficace)
+    \item Définir un ordre dans l'attribution de ressources (moins efficace)
     \item Ne démarrer un processus que si on peut réserver d'avance ses
     ressources
     \item Ne donner les ressources que si le système reste dans un état sain.
@@ -291,9 +290,9 @@ P2  3 5 1                 P1  0 0 0    P2  3 5 1
 \def\subsectitle{Détections des cycles}
 \subsection{\subsectitle}
 \begin{itemize}
-    \item Soit $D_{T}$ l'ensemble des processus sur lesquels D attend.
+    \item Soit $D_{T}$ l'ensemble des processus sur lesquels T attend.
     \item $D_{T} = T$ si T ne veut rien.
-    \item $D_{T} = D_{owner(R)}$
+    \item $D_{T} = D_{owner(R)}$ (Union de lui avec un autre $D_{i}$).
 \end{itemize}
 \end{block}
 
