@@ -1,0 +1,457 @@
+%%%%\%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Introduction aux Systèmes d'exploitation  %%
+%%   * Historique                            %%
+%%   * Principes fondamentaux                %%
+%%   * Grandes classes de systèmes           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Systèmes d'exploitation, 2ème année}
+\subtitle{Communication}
+
+\author{Yves \textsc{Stadler}}\institute{Université Paul Verlaine - Metz}
+
+\date{\today}
+
+\begin{document}
+
+
+%%
+% Page de Titre
+%%
+\begin{frame}
+\titlepage
+\end{frame}
+
+\def\sectitle{Agenda}
+\section{\sectitle}
+\def\subsectitle{Plan du cours}
+\subsection{\subsectitle}
+
+\begin{frame}{\sectitle}
+\def\subsectitle{Plan du cours}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+\item Tubes de communication
+\item Tubes nommés
+\item Partage de mémoire
+\item Signaux
+\end{itemize}
+\end{block}
+\end{frame}
+
+\def\sectitle{Motivations}
+\section{\sectitle}
+\begin{frame}{\sectitle}
+\def\subsectitle{Contexte}
+\subsection{\subsectitle}
+
+\begin{exampleblock}{\subsectitle}
+
+\begin{itemize}
+    \item Exécution de \texttt{ls -l | cut -f 2 -d ' '}
+    \item Création de deux processus concurrents
+    \item \texttt{ls} écrit des données dans un `pipe` 
+    \item \texttt{cut} lit des données dans un `pipe`
+    \item \texttt{ls} termine par un `EOF`
+    \item \texttt{cut} lit jusqu'à `EOF`
+\end{itemize}
+\end{exampleblock}
+\def\subsectitle{En programmation}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Dans le cas d'un pipe système: automatique
+    \item Peut-on faire pareil en programmant ?
+    \item Avoir un flux qui bloque tant que rien n'est a lire
+    \item Pouvoir écrire dans ce flux avec un processus.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\def\sectitle{Tubes}
+\section{\sectitle}
+\begin{frame}{\sectitle}
+\def\subsectitle{Définition}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Le tube est une file d'attente FIFO
+    \item Unidirectionel
+    \item Communication par flot
+    \item Auto-synchronisé
+    \item Appartient au système (comme les sémaphores)
+\end{itemize}
+\end{block}
+
+\def\subsectitle{Comportement}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Table des fichiers ouverts (descripteur)
+    \item La lecture est destructrice, tout ce qui est lu disparait du tube
+    \item Capacité finie, un tube peut être saturé.
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+
+\begin{frame}{\sectitle}
+\def\subsectitle{Reprrésentation}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Identifié par un numéro \texttt{i-node} comme un fichier
+    \item N'existe pas dans le système de fichier
+    \item On utilise les blocs adressés directement
+    \item File circulaires (double pointeurs)
+\end{itemize}
+\end{block}
+
+\def\subsectitle{Aller plus loin}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item On peut aussi nommer un tube
+    \item On peut communiquer entre processus étrangers.
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+
+\def\sectitle{Fonction pipe}
+\section{\sectitle}
+\begin{frame}[containsverbatim]{\sectitle}
+\begin{block}{\subsectitle}
+\begin{verbatim}
+NAME
+       pipe, pipe2 - create pipe
+
+SYNOPSIS
+       #include <unistd.h>
+
+       int pipe(int pipefd[2]);
+\end{verbatim}
+\end{block}
+\end{frame}
+
+\begin{frame}{\sectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Créer un pipe unidirectionnel 
+    \item pipefd et rempli avec deux descripteurs
+    \item \texttt{[0]} est la sortie du tube, on peut lire \texttt{pipefd[0]}
+    \item \texttt{[1]} est l'entrée du tube, on peut écrire \texttt{pipefd[1]}
+    \item Le processus qui ne lit pas fermera \texttt{pipefd[0]} (close)
+    \item Le processus qui n'écrit pas fermera \texttt{pipefd[1]} (close)
+\end{itemize}
+\end{block}
+\end{frame}
+
+\def\sectitle{Lire et écrire}
+\section{\sectitle}
+\begin{frame}[containsverbatim]{\sectitle}
+\def\subsectitle{man 2 read}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{verbatim}
+NAME
+       read - read from a file descriptor
+
+SYNOPSIS
+       #include <unistd.h>
+
+       ssize_t read(int fd, void *buf, size_t count);
+
+\end{verbatim}
+\end{block}
+\end{frame}
+
+\begin{frame}{\sectitle}
+\def\subsectitle{Paramètres}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item fd: descripteur de fichier
+    \item buf: variable pour recevoir les données
+    \item count: nombre d'octets à lire
+    \item Attention, read renvoi le nombre d'octets effectivement lus (pas
+    forcément ce que l'on a demandé)
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}[containsverbatim]{\sectitle}
+\def\subsectitle{man 2 write}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{verbatim}
+NAME
+       write - write to a file descriptor
+
+SYNOPSIS
+       #include <unistd.h>
+
+       ssize_t write(int fd, const void *buf, size_t count);
+\end{verbatim}
+\end{block}
+\end{frame}
+
+\begin{frame}[containsverbatim]{\sectitle}
+\def\subsectitle{Paramètres}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item fd: descripteur de fichier
+    \item buf: variable pour recevoir les données
+    \item count: nombre d'octets à lire
+    \item Attention, read renvoi le nombre d'octets effectivement lus (pas
+    forcément ce que l'on a demandé)
+\end{itemize}
+\end{block}
+\end{frame}
+
+\def\sectitle{Tubes nommés}
+\section{\sectitle}
+\begin{frame}[containsverbatim]{\sectitle}
+\def\subsectitle{man 3 mkfifo}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{verbatim}
+NAME
+       mkfifo - make a FIFO special file (a named pipe)
+
+SYNOPSIS
+       #include <sys/types.h>
+       #include <sys/stat.h>
+
+       int mkfifo(const char *pathname, mode_t mode);
+\end{verbatim}
+\end{block}
+\end{frame}
+
+\def\sectitle{Opérations sur les descipteurs}
+\section{\sectitle}
+\begin{frame}{\sectitle}
+\def\subsectitle{Dup}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item \texttt{int desc2 = dup (int desc1);}
+    \item Duplique une entrée de la table des descripteurs
+    \item \texttt{int dup2(int src, int dest);}
+    \item Copie dans dest les informations de src
+    \item Exemple, remplacer stdin par un tube
+\end{itemize}
+\end{block}
+\end{frame}
+
+\def\sectitle{Mémoire partagée}
+\section{\sectitle}
+\begin{frame}[containsverbatim]{\sectitle}
+\def\subsectitle{Utilisation}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Similaire à l'utilisation des files et sémaphores
+    \item Besoin d'une clef (man ftok), ou IPC\_PRIVATE
+    \item Dispose d'une taille
+\end{itemize}
+\end{block}
+
+\def\subsectitle{man 2 shmget}
+\subsection{\subsectitle}
+\begin{block} {\subsectitle}
+\begin{verbatim}
+NAME
+       shmget - allocates a shared memory segment
+
+SYNOPSIS
+       #include <sys/ipc.h>
+       #include <sys/shm.h>
+
+       int shmget(key_t key, size_t size, int shmflg);
+\end{verbatim}
+\end{block} 
+\end{frame}
+
+\def\sectitle{Controle des segments}
+\section{\sectitle}
+\begin{frame}[containsverbatim]{\sectitle}
+\def\subsectitle{man 2 shmctl}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{verbatim}
+NAME
+       shmctl - shared memory control
+
+SYNOPSIS
+       #include <sys/ipc.h>
+       #include <sys/shm.h>
+
+       int shmctl(int shmid, int cmd, struct shmid_ds *buf);
+
+\end{verbatim}
+\end{block}
+
+\def\subsectitle{Notes}
+\subsection{\sectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Peu utile en général
+    \item Lié à la structure shmid\_ds décrite dans le man
+\end{itemize}
+\end{block}
+\end{frame}
+
+\def\sectitle{Utilisation}
+\section{\sectitle}
+\begin{frame}[containsverbatim]{\sectitle}
+\def\subsectitle{man shmat, man shmdt}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{verbatim}
+
+NAME
+       shmat, shmdt - shared memory operations
+
+SYNOPSIS
+       #include <sys/types.h>
+       #include <sys/shm.h>
+
+       void *shmat(int shmid, const void *shmaddr, int shmflg);
+
+       int shmdt(const void *shmaddr);
+\end{verbatim}
+\end{block}
+\end{frame}
+
+\begin{frame}{\sectitle}
+\def\subsectitle{Attacher, détacher}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item \texttt{shmat} Attache shmid dans l'espace d'adressage du processus appelant
+    \item shmaddr == NULL: cherche une adresse compatible.
+    \item Si shmaddr n'est pas NULL, utiliser SHM\_RND ou faire attention
+    d'avoir une adresse alignée avec la page mémoire.
+    \item renvoie l'adresse du segment attaché.
+    \item \texttt{shmdt} détache shmid.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\def\sectitle{Signaux}
+\section{\sectitle}
+\begin{frame}{\sectitle}
+\def\subsectitle{Interruptions}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Interruptions logicielles
+    \item Réagir à des événements sans continuellement attendre.
+    \item Un processus peut dire au système ce qui doit se passer sur un signal.
+    \begin{itemize}
+        \item Ignorer
+        \item Prendre en compte : exécuter une fonction (handler)
+        \item Appliquer le comportement par défaut (KILL)
+    \end{itemize}
+    \item tous les signaux ne sont pas interceptable ni ignorable.
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}[containsverbatim]{\sectitle}
+\def\subsectitle{man 7 signals}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{verbatim}
+man 7 signal
+Signal Value Action Comment
+-----------------------------------------------------------
+SIGHUP    1   Term  Hangup detected on controlling terminal
+                    or death of controlling process
+SIGINT    2   Term  Interrupt from keyboard
+SIGQUIT   3   Core  Quit from keyboard
+SIGILL    4   Core  Illegal Instruction
+SIGABRT   6   Core  Abort signal from abort(3)
+SIGFPE    8   Core  Floating point exception
+SIGKILL   9   Term  Kill signal
+...
+\end{verbatim}
+\end{block}
+\end{frame}
+
+
+\begin{frame}[containsverbatim]{\sectitle}
+\def\subsectitle{Signal kill}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item \texttt{int kill(pid\_t pid, int sig);}
+    \item Génère/Envoi un signal KILL pour pid
+\end{itemize}
+\end{block}
+
+\def\subsectitle{Gestion de signaux}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{verbatim}
+NAME
+       sigaction - examine and change a signal action
+
+SYNOPSIS
+       #include <signal.h>
+
+       int sigaction(int signum, const struct sigaction *act,
+                     struct sigaction *oldact);
+\end{verbatim}
+\end{block}
+
+\end{frame}
+
+
+\begin{frame}[containsverbatim]{\sectitle}
+\def\subsectitle{Structure de gestion des signaux}
+\subsection{\subsectitle}
+\begin{verbatim}
+           struct sigaction {
+               void     (*sa_handler)(int);
+               void     (*sa_sigaction)(int, siginfo_t *, void *);
+               sigset_t   sa_mask;
+               int        sa_flags;
+               void     (*sa_restorer)(void);
+           };
+\end{verbatim}
+\end{frame}
+
+\def\sectitle{Masquage}
+\section{\sectitle}
+\begin{frame}{\sectitle}
+\def\subsectitle{Masquage}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Les processus dispose d'un masque qui défini l'ensemble des signaux
+    bloqués.
+    \item \texttt{sigprocmask} gère cet ensemble
+    \item sigemptyset, sigfillset, sigaddset, ...
+\end{itemize}
+\end{block}
+
+\def\subsectitle{Attente d'un signal}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item pause()
+    \item alarm()
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+\end{document}
