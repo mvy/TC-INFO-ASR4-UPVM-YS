@@ -1,0 +1,387 @@
+%%%%\%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Introduction aux Systèmes d'exploitation  %%
+%%   * Historique                            %%
+%%   * Principes fondamentaux                %%
+%%   * Grandes classes de systèmes           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Systèmes d'exploitation, 2ème année}
+\subtitle{Mémoires}
+
+\author{Yves \textsc{Stadler}}\institute{Université Paul Verlaine - Metz}
+
+\date{\today}
+
+\begin{document}
+
+
+%%
+% Page de Titre
+%%
+\begin{frame}
+\titlepage
+\end{frame}
+
+\def\sectitle{Agenda}
+\section{\sectitle}
+\def\subsectitle{Plan du cours}
+\subsection{\subsectitle}
+
+\begin{frame}{\sectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Utilisation
+    \item Répartition
+    \item Mémoire swap
+    \item Mémoire paginée
+    \item Segmentation
+    \item Segmentation et pagination
+\end{itemize}
+\end{block}
+\end{frame}
+
+\def\sectitle{Utilisation de la mémoire}
+\section{\sectitle}
+\begin{frame}{\sectitle}
+\def\subsectitle{Que stocke la mémoire}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Variables, 
+    appels aux fonctions,
+    calculs,
+    code!
+\end{itemize}
+\end{block}
+
+\def\subsectitle{Comportement de la mémoire}
+\subsection{\subsectitle}
+\begin{alertblock}{\subsectitle}
+\begin{itemize}
+    \item La mémoire est une zone de stocakge adressable.
+    \item La mémoire n'a aucune idée d'où viennent les données
+    \item La mémoire n'a aucune idée de l'utilisation des données
+\end{itemize}
+\end{alertblock}
+
+
+\end{frame}
+
+\def\sectitle{Problèmes}
+\section{\sectitle}
+\begin{frame}{\sectitle}
+\def\subsectitle{Organisation de la mémoire}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Est-ce qu'un programme peut utiliser toute la mémoire ?
+    \item Est-ce que la mémoire est partagée ?
+    \item Si oui comment ? Morceaux fixes? Variables? Stockée où?
+\end{itemize}
+\end{block}
+
+\def\subsectitle{Manipulations}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Peut-on protéger la mémoire?
+    \item Comment adresse plus de 64KB? (32bits = 64K adresses)
+    \item Comment accéder à plus de mémoire que la RAM?
+\end{itemize}
+\end{block}
+\end{frame}
+
+\def\sectitle{Type de mémoires}
+\section{\sectitle}
+\begin{frame}{\sectitle}
+\def\subsectitle{Support de stockage}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Registres (volatile)
+    \item Mémoire cache (volatile)
+    \item RAM (volatile)
+    \item Disques (permanente)
+    \item Bande magnétiques (permanente)
+\end{itemize}
+
+\end{block}
+
+\def\subsectitle{Avantages}
+\subsection{\subsectitle}
+\begin{alertblock}{\subsectitle}
+\begin{itemize}
+    \item Plus on descend dans la liste plus on perd on rapidité d'accès
+    \item Plus on descend dans la liste plus on gagne en capacité de stockage
+\end{itemize}
+\end{alertblock}
+\end{frame}
+
+\def\sectitle{Protection de la mémoire}
+\section{\sectitle}
+\begin{frame}{\sectitle}
+\def\subsectitle{Idée}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item On ne veux pas qu'un programme étrange puisse manipuler notre mémoire
+    \item Le noyaux ne veux pas que l'on manipule se mémoire.
+\end{itemize}
+\end{block}
+
+\def\subsectitle{Réalisation}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Notion d'adresse privée: adresse logiques.
+    \item Notion d'adresse physique: emplacement réel
+    \item Le programme ne manipule que des adresses logiques
+    \item Le CPU manipule des adresses physiques
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\def\sectitle{Allocation continue}
+\section{\sectitle}
+\begin{frame}{\sectitle}
+\def\subsectitle{Principe}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Un seul processus en mémoire à un instant donné
+    \item Très bien pour les architecture mono-programmation
+    \item Pour les autres, il faut utiliser le swap
+\end{itemize}
+\end{block}
+\def\subsectitle{Swap}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Swap: alternance de la présence de donnée en mémoire centrale
+    \item Swap-in: Chargement de la mémoire d'un processus en mémoire centrale
+    \item Swap-out: Déchargement de la mémoire d'un processus (généralement en
+    mémoire cache, ou sur disque)
+\end{itemize}
+\end{block}
+\end{frame}
+
+\def\sectitle{Partage mémoire}
+\section{\sectitle}
+\begin{frame}{\sectitle}
+\def\subsectitle{Principe}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item On place les processus dans la mémoire de manière séquentielle.
+    \item Un programme à donc une limite de mémoire utilisable: de la première
+    adresses à la première adresse du programme suivant.
+    \item Les limites peuvent être fixées.
+    \item Où charger les processus en mémoire?
+\end{itemize}
+\end{block}
+
+\def\subsectitle{Algorithmes de placement}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item First-fit: premier bloc disponible de taille suffisante.
+    \item Best-fit: Plus petit bloc de taille suffisante
+    \item Worst-fit: Bloc qui permet de garder l'espace lire le plus grand
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}{\sectitle}
+\def\subsectitle{Problème: fragmentation}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Allouer, puis libérer de la mémoire créer de la fragmentation
+    \item On peut se retrouver avec assez de mémoire en absolu, mais pas assez
+    d'espace continu pour allouer un nouveau processus.
+\end{itemize}
+\end{block}
+
+\def\subsectitle{Solution: compactage}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Les adresses physiques peuvent changer!
+    \item Il faut tenir à jour une correspondance des adresses.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\def\sectitle{Pagination}
+\section{\sectitle}
+\begin{frame}{\sectitle}
+\def\subsectitle{Concept}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Mémoire en tranches: cadres de pages
+    \item Dans une page : adresse logique, relative au zéro de cette page.
+    \item Pages numérotées
+    \item Chaque page à une adresse dans la mémoire physique
+    \item Correspondance numéro de page/adresse page : la table de pages.
+    \item Une page pourra être invalide (pas en mémoire)
+\end{itemize}
+\end{block}
+\def\subsectitle{Implications}
+\subsection{\subsectitle}
+\begin{exampleblock}{\subsectitle}
+\begin{itemize}
+    \item adresse logique: renvoyée par un malloc;
+    \item adresse logique est un déplacement (offset) dans la page en cours.
+    \item adresse logique == page\#:offset
+    \item adresse physique == @page:offset
+    \item ces conversions sont le travail du MMU memory management unit
+\end{itemize}
+\end{exampleblock}
+\end{frame}
+
+\begin{frame}{\sectitle}
+\def\subsectitle{Pour le programmeur}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Utilisation de grands espaces mémoire: problème d'optimisation
+\end{itemize}
+\end{block}
+
+\def\subsectitle{Exemple}
+\subsection{\subsectitle}
+\begin{exampleblock}{\subsectitle}
+\begin{itemize}
+    \item taille page: \texttt{128*sizeof(int)}
+    \item \texttt{int tab[128][128]}
+    \item Une page peut stocker une ligne
+    \item Comment parcourir le tableau?
+\end{itemize}
+\end{exampleblock}
+\end{frame}
+
+
+\begin{frame}[containsverbatim]{\sectitle}
+\def\subsectitle{Exemple}
+\subsection{\subsectitle}
+\begin{exampleblock}{\subsectitle}
+\begin{verbatim}
+for(i = 0; i < LIGNE; i++) {
+    for(j = 0; i < COLONNE; j++) {
+        ...tab[i][j]... //Accède une page une fois
+    }
+}
+\end{verbatim}
+\end{exampleblock}
+
+\def\subsectitle{Exemple}
+\subsection{\subsectitle}
+\begin{exampleblock}{\subsectitle}
+\begin{verbatim}
+for(j = 0; i < COLONNE; j++) {
+    for(i = 0; i < LIGNE; i++) {
+        ...tab[i][j]... //Accède une page i fois
+    }
+}
+\end{verbatim}
+
+\end{exampleblock}
+
+\end{frame}
+
+
+\begin{frame}{\sectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Le temps d'accès mémoire est doublé
+\end{itemize}
+\end{block}
+
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Utilisation des Translation Look-aside-buffers
+    \item Mémoire cache page\#->adresse page
+    \item Coût matériel
+    \item le temps d'accès varie en fonction :
+    \begin{itemize}
+        \item Du temps d'accès au TBL et mémoire
+        \item Du taux de présence des pages en TBL
+    \end{itemize}
+\end{itemize}
+\end{block}
+\end{frame}
+
+\def\sectitle{Segmentation}
+\section{\sectitle}
+\begin{frame}{\sectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item L'espace mémoire d'un programme est segmenté
+    \item Segment code, donnée, pile, autres.
+    \item Permet le partage de segment
+    \item Assembleur: pointeurs CS, DS, ES, SS
+    \item Segment à une taille limitée.
+    \item Problème: fragementation -> on peut ajouter la pagination
+\end{itemize}
+\end{block}
+\end{frame}
+
+\def\sectitle{Mémoire paginée et segmentée}
+\section{\sectitle}
+\begin{frame}{\sectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Les segments peuvent avoir beaucoup de pages
+    \item Répertoire de tables de pages
+    \item Une adresse virtuelle: (seg; seg-offset)
+    \item seg indique un numéro de segment dans la table des segments
+    \item L'entrée de la table donne le début du segment en mémoire
+    \item L'entrée donne aussi la limite: si seg-off hors intervalle, segfault.
+    \item seg-off = (page; page-offset)
+    \item L'entrée segment dispose d'un pointeur vers le début de sa table de
+    page
+    \item On cherche page dans la table pointée
+    \item On trouve l'adresse mémoire correspondante
+    \item On ajoute page-off
+\end{itemize}
+\end{block}
+\end{frame}
+
+\def\sectitle{Mémoire paginée}
+\section{\sectitle}
+\begin{frame}{\sectitle}
+\def\subsectitle{Utilité}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Les pages ne sont pas nécessairement en mémoire
+    \item Génération de "fautes de page"
+    \item On doit charger cette page depuis le disque
+    \item Place disponible dans les cadres?
+    \item Oui: on charger
+    \item Non: on doit changer une page pour celle-ci
+    \item Coûteux: besoin d'un algorithme d'optimisation
+\end{itemize}
+\end{block}
+\end{frame}
+
+\def\sectitle{Stratégie de remplacement de page}
+\section{\sectitle}
+\begin{frame}{\sectitle}
+\def\subsectitle{Algorithmes}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item FIFO, enlever la plus ancienne
+    \item OPTIMAL, enlever la page qui est moins demandée
+    \item LRU (Last recently used): page la moins utilisée
+    \item Seconde chance, FIFO avec bit référence : si seconde change, remise en
+    queue avec changement du bit
+    \item NRU, bits Référence/écriture
+\end{itemize}
+\end{block}
+\end{frame}
+\end{document}
