@@ -1,0 +1,232 @@
+%%%%\%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Introduction aux Systèmes d'exploitation  %%
+%%   * Historique                            %%
+%%   * Principes fondamentaux                %%
+%%   * Grandes classes de systèmes           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Systèmes d'exploitation, 2ème année}
+\subtitle{Primitives Execs}
+
+\author{Yves \textsc{Stadler}}\institute{Université Paul Verlaine - Metz}
+
+\date{\today}
+
+\begin{document}
+
+
+%%
+% Page de Titre
+%%
+\begin{frame}
+\titlepage
+\end{frame}
+
+\def\sectitle{Agenda}
+\section{\sectitle}
+\def\subsectitle{Plan du cours}
+\subsection{\subsectitle}
+
+\begin{frame}{\sectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+\item Concept
+\item Fonctions
+\item Réalisation
+\end{itemize}
+\end{block}
+\end{frame}
+
+\def\subsectitle{}
+\subsection{\subsectitle}
+
+\def\sectitle{Exec}
+\section{\sectitle}
+\begin{frame}{\sectitle}
+\def\subsectitle{Notion}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+\item Lancer un programme existant depuis un autre programme
+\item Idée: remplacer l'image mémoire du processus par une autre
+\item Les primitives exec vont nous permettre de faire ça.
+\end{itemize}
+\end{block}
+
+\def\subsectitle{Remarque}
+\subsection{\subsectitle}
+\begin{alertblock}{\subsectitle}
+\begin{itemize}
+\item Attention, lorsque l'on appel une primitive exec celle-ci ne se terminera
+pas.
+\item Un processus qui appel une primitive exec ne changera pas d'identité.
+\end{itemize}
+
+\end{alertblock}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]{\sectitle}
+\def\subsectitle{Parmètres}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Un programme
+    \item Des paramètres
+    \item Des variables d'environnement.
+\end{itemize}
+\end{block}
+
+\def\subsectitle{Example}
+\subsection{\subsectitle}
+\begin{exampleblock}{\subsectitle}
+\begin{verbatim}{\subsectitle}
+int main(int argc, char * argv[], char * arge[]);
+\end{verbatim}
+\end{exampleblock}
+\end{frame}
+
+
+
+\begin{frame}[containsverbatim]{\sectitle}
+\def\subsectitle{man exec}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{verbatim}
+NAME
+       execl, execlp, execle, execv, execvp - execute a file
+
+SYNOPSIS
+       #include <unistd.h>
+
+       extern char **environ;
+
+       int execl(const char *path, const char *arg, ...);
+       int execlp(const char *file, const char *arg, ...);
+       int execle(const char *path, const char *arg,
+                  ..., char * const envp[]);
+       int execv(const char *path, char *const argv[]);
+       int execvp(const char *file, char *const argv[]);
+\end{verbatim}
+\end{block}
+\end{frame}
+
+\begin{frame}{\sectitle}
+\def\subsectitle{Différences}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Recherche du programme : 
+    \begin{itemize}
+        \item vide: répertoire en cours (execl, execv, execle)
+        \item p : path (execlp, execvp)
+    \end{itemize}
+    \item Arguments du programme :
+    \begin{itemize}
+        \item vide: tableau (terminé par NULL)
+        \item l : liste explicite (terminée par NULL)
+    \end{itemize}
+    \item Utiliser:
+    \begin{itemize}
+        \item vide: environnement courant
+        \item e : environnement sous forme de tableau (terminé par NULL)
+    \end{itemize}
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{\sectitle}
+\def\subsectitle{Fonctionnement}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Rechercher le fichier pointer par arg1
+    \item Vérifier que le fichier est exécutable (permissions)
+    \item Vérifier dans l'entête que le fichier peut être chargé
+    \item Copier les paramètres de l'exec courant dans l'espace système
+    \item Détacher toutes les régions du programme
+    \item Allouer de nouvelles régions
+    \item Attacher les nouvelles régions
+    \item Charger la région en mémoire
+    \item Copier les paramètres de l'exec dans la pile utilisateur.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\def\sectitle{}
+\section{\sectitle}
+\begin{frame}{\sectitle}
+\def\subsectitle{Ne pas oublier}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Sauf si il échoue à se lancer, on ne revient pas d'un exec
+    \item Tout le code écrit après un exec qui a réussi n'existe plus!
+    (écrasement)
+\end{itemize}
+\end{block}
+
+\def\subsectitle{Contrôle}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item \texttt{pid\_t wait(int *status);}
+    \item \texttt{pid\_t waitpid(pid\_t pid, int *status, int options);}
+    \item \texttt{ waitpid(-1, \&status, 0);}
+    \item Comment exploiter la variable status.
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+\def\sectitle{Fin de processus}
+\section{\sectitle}
+\begin{frame}{\sectitle}
+\begin{block}{\subsectitle}
+\def\subsectitle{Mort du processus}
+\subsection{\subsectitle}
+\begin{itemize}
+    \item Fonction de tests
+    \item WIFEXITED(status) : indique si un processus s'est terminé correctement
+    \item WEXITSTATUS(status): code d'erreur retourné par le fils (exit/return)
+    \item WIFSIGNALED(status): vrai si fils terminé par un signal
+    \item WTERMSIG(satus): renvoi le numéro du signal qui a terminé le fils
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}{\sectitle}
+\def\subsectitle{Communication intrasèque}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Comment communiquer avec les fils ?
+    \item Redirection d'entrée standard et de sortie standard (dup)
+    \item Utilisation des pipes nommés
+    \item Utilisation de popen (pipe + fork + shell)
+\end{itemize}
+\end{block}
+\end{frame}
+
+\def\sectitle{Divers}
+\section{\sectitle}
+\begin{frame}{\sectitle}
+\def\subsectitle{Divers}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item \texttt{int system(const char *command);} si on veut juste exécuter
+    une commande.
+    \item \texttt{vfork}: système dédié nécessitant performance -> père bloqué
+    tant que le fils existe et n'a pas fait un \texttt{exevce}
+    \item Dans le cas du vfork, il y a un partage de mémoire temporaire. A
+    utiliser avec extrème précaution.
+    \item Si on veut travailler avec des mémoires partagées, il existe
+    \texttt{clone}
+    \item Clone est utilisé pour créer des threads.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\end{document}
