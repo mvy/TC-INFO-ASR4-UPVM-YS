@@ -6,7 +6,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \title{Systèmes d'exploitation, 2ème année}
-\subtitle{Fichiers et processus}
+\subtitle{Système de gestion de fichiers - Symbolique programmeur}
 
 \author{Yves \textsc{Stadler}}\institute{Université Paul Verlaine - Metz}
 
@@ -30,39 +30,265 @@
 \begin{frame}{\sectitle}
 \begin{block}{\subsectitle}
 \begin{itemize}
-\item Système de gestion des fichiers
-\item Gestion des processus
-\item Gestion de la mémoire
-\item Communication TCP/IP
+\item Pourquoi les fichiers 
+\item Un système de gestion
+\item Représentation symbolique externe
+\item Représentation symbolique noyau
 \end{itemize}
 \end{block}
 \end{frame}
 
-\def\subsectitle{test}
+
+\def\sectitle{Objectifs et motivations}
+\section{\sectitle}
+\begin{frame}{\sectitle}
+\def\subsectitle{Motivation}
 \subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item La mémoire vive disparait après usage
+    \item Mémoire vive non persistante (données à durée de vie = vie du processus)
+    \item Faible capacité
+    \item Non partageable en dehors de l'ordinateur
+    \item Aucune organisation personnelle
+\end{itemize}
+\end{block}
+
+\def\subsectitle{Objectifs}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Mémoire persistante
+    \item Très grande capacités
+    \item Partage possible
+    \item Organisation des données
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+
+
+\def\sectitle{Le Système de Gestion des Fichiers}
+\section{\sectitle}
+\begin{frame}{\sectitle}
+\def\subsectitle{À quoi sert le SGF}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Définition d'un fichier
+    \item Manipulation d'un fichier
+    \item Gérer l'organisation logique
+    \item Lien entre le symbolique et le physique
+    \item Gestion méta-logique (sécurité, robustesse, ...)
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\def\sectitle{Représentation symbolique externe}
+\section{\sectitle}
+\begin{frame}{\sectitle}
+\begin{block}{\subsectitle}
+\def\subsectitle{Qu'est-ce qu'un fichier}
+\subsection{\subsectitle}
+\begin{itemize}
+    \item Flux linéaire d'octets
+    \item Le programmeur n'a besoin que d'un nombre minimun d'information
+    \begin{itemize}
+        \item nom
+        \item taille
+        \item type
+        \item propriétaire
+        \item dates
+        \item protections
+    \end{itemize}
+\end{itemize}
+\end{block}
+
+\def\subsectitle{Flux linéaire d'octets}
+\subsection{\subsectitle}
+\begin{exampleblock}{\subsectitle}
+\begin{itemize}
+    \item Tubes
+    \item Sockets
+    \item Tout ce qui peut entrer dans \texttt{open(2)}
+\end{itemize}
+\end{exampleblock}
+\end{frame}
 
 
 \begin{frame}{\sectitle}
+\def\subsectitle{Format de fichiers}
+
+\def\subsectitle{}
+\subsection{\subsectitle}
+
+\def\subsectitle{Contenus}
+\subsection{\subsectitle}
+\begin{exampleblock}{\subsectitle}
+\begin{itemize}
+    \item Sources, traitement de texte, ...
+    \item Scripts, exécutables, ...
+    \item Spéciaux: fichier null, périphérique
+    \item Répertoires
+\end{itemize}
+\end{exampleblock}
+
+\def\subsectitle{Formats}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Fichiers ordinaires non-exécutables / exécutable
+    \item Fichiers spéciaux
+    \item Répertoires
+\end{itemize}
+\end{block}
+
+\def\subsectitle{Attention}
+\subsection{\subsectitle}
 \begin{alertblock}{\subsectitle}
 \begin{itemize}
-\item test 
+    \item L'extension est juste un visuel et n'a rien a voir avec le format!
 \end{itemize}
 \end{alertblock}
 
-\begin{exampleblock}{test}
-\begin{itemize}
-\item test
-\end{itemize}
+\end{frame}
 
-\end{exampleblock}
+\def\subsectitle{Protections}
+\subsection{\subsectitle}
+\begin{frame}{\sectitle}
+\begin{block}{Champs de protection: ls -l}
+    \begin{center}
+        \begin{tabular}{|c|c|c|}
+        \hline
+        U & G & O\\
+        \hline
+        r x w & r x w & r x w \\
+        \hline
+        \end{tabular}
+    \end{center}
 
-\begin{block}{test}
-\begin{itemize}
-\item test
-\end{itemize}
-
+    \begin{itemize}
+        \item \texttt{-rwxrwxrwx}
+    \end{itemize}
 \end{block}
 
+\begin{block}{Légende}
+\begin{itemize}
+\item  User Group Others
+\item  Read Write eXecute
+\item  Absence de droit : -
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]{\sectitle}
+\def\subsectitle{Distinction fichier répertoire}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item \texttt{-rwxrwxrwx} : fichier
+    \item \texttt{drwxrwxrwx} : répertoire
+\end{itemize}
+\end{block}
+
+\def\subsectitle{Distinction du format de fichier}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{verbatim}
+ystadler@stage-habbas:~$ file lock
+lock: ASCII text
+ystadler@stage-habbas:~$ file vimconf.tar.gz
+vimconf.tar.gz: gzip compressed data, from Unix, last 
+modified: Fri Oct 21 13:49:32 2011
+ystadler@stage-habbas:~$
+\end{verbatim}
+\end{block} 
+
+\end{frame}
+
+\begin{frame}{\sectitle}
+\def\subsectitle{Les permissions en C}
+\subsection{\subsectitle}
+\begin{exampleblock}{\subsectitle}
+\begin{itemize}
+    \item \texttt{S\_IRUSR S\_IWUSR S\_IXUSR}
+    \item \texttt{S\_IRGRP S\_IWGRP S\_IXGRP}
+    \item \texttt{S\_IROTH S\_IWOTH S\_IXOTH}
+\end{itemize}
+\end{exampleblock}
+
+\def\subsectitle{Consultation et modification des droits}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Appel système \texttt{access(2)} permet de lire ces informations
+    \item Appel système \texttt{chmod(2)} permet de modifier ces informations
+    \item Il faut que le progamme ait les droits de le faire.
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+
+\def\sectitle{Représentation symolique interne}
+\section{\sectitle}
+\begin{frame}{\sectitle}
+\def\subsectitle{Associer le nom de fichier à un élément système}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Un fichier c'est un emplacement de début sur le disque et une taille
+    \item Comment dire que "readme.txt" est à cet endroit
+\end{itemize}
+\end{block}
+
+\def\subsectitle{Philosophie}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item On a pas besoin d'avoir en permanence un lien vers tous les fichiers
+    \item Notion de fichiers ouverts et fermés (\texttt{open(2) close(2)})
+    \item On doit conserver un lien avec les fichiers ouverts (efficacité)
+    \item Pourquoi ne pas numéroter les fichiers ouverts?
+    \item On utilise une table des fichiers ouverts
+    \item C'est un cache, recherche physique effectuée une seule fois.
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+
+\begin{frame}{\sectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Chaque fichiers dispose d'un numéro d'entrée dans la table de fichiers
+    ouverts
+    \item Ce numéro est le descripteur de ce fichiers
+    \item La table gère ensuite les permissions, liens physique, ...
+    \item On stocke dans cette table la position de lecture dans le fichier
+\end{itemize}
+\end{block}
+
+\begin{exampleblock}{\subsectitle}
+\begin{itemize}
+    \item \texttt{STDIN\_FILENO} vaut toujours 0 pour tous les processus?
+\end{itemize}
+\end{exampleblock}
+
+\begin{block}{\subsectitle}
+\begin{itemize} 
+    \item Table à deux niveaux
+    \item Chaque processus gère ses descripteurs de fichiers (dont
+    \texttt{STDIN\_FILENO} ...
+    \item Chaque élément de la table des fichiers ouverts pointent sur un
+    élément de la table des fichiers ouverts du système
+    \item On ne peut pas partager de descripteur de fichier entre processus
+    (sauf avec fork car duplication).
+\end{itemize}
+\end{block}
 \end{frame}
 
 
