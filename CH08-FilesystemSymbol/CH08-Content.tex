@@ -110,8 +110,7 @@
 \subsection{\subsectitle}
 \begin{exampleblock}{\subsectitle}
 \begin{itemize}
-    \item Tubes
-    \item Sockets
+    \item Tubes, Sockets
     \item Tout ce qui peut entrer dans \texttt{open(2)}
 \end{itemize}
 \end{exampleblock}
@@ -254,7 +253,6 @@ ystadler@stage-habbas:~$
     \item On doit conserver un lien avec les fichiers ouverts (efficacité)
     \item Pourquoi ne pas numéroter les fichiers ouverts?
     \item On utilise une table des fichiers ouverts
-    \item C'est un cache, recherche physique effectuée une seule fois.
 \end{itemize}
 \end{block}
 
@@ -262,8 +260,11 @@ ystadler@stage-habbas:~$
 
 
 \begin{frame}{\sectitle}
+\def\subsectitle{Table des fichiers ouverts - kernel}
+\subsection{\subsectitle}
 \begin{block}{\subsectitle}
 \begin{itemize}
+    \item C'est un cache, recherche physique effectuée une seule fois.
     \item Chaque fichiers dispose d'un numéro d'entrée dans la table de fichiers
     ouverts
     \item Ce numéro est le descripteur de ce fichiers
@@ -271,13 +272,19 @@ ystadler@stage-habbas:~$
     \item On stocke dans cette table la position de lecture dans le fichier
 \end{itemize}
 \end{block}
+\end{frame}
 
+\begin{frame}{\sectitle}
+\def\subsectitle{On se souvient}
+\subsection{\subsectitle}
 \begin{exampleblock}{\subsectitle}
 \begin{itemize}
     \item \texttt{STDIN\_FILENO} vaut toujours 0 pour tous les processus?
 \end{itemize}
 \end{exampleblock}
 
+\def\subsectitle{Table des fichiers - processus}
+\subsection{\subsectitle}
 \begin{block}{\subsectitle}
 \begin{itemize} 
     \item Table à deux niveaux
@@ -291,5 +298,82 @@ ystadler@stage-habbas:~$
 \end{block}
 \end{frame}
 
+\begin{frame}{\sectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item opération de fichiers : 
+    \begin{itemize}
+        \item open(2)
+        \item close(2)
+        \item lseek(2)
+        \item read(2)
+        \item write(2)
+    \end{itemize}
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\def\sectitle{Standard library}
+\section{\sectitle}
+
+\begin{frame}{\sectitle}
+\def\subsectitle{Que sont les fonctions usuelles?}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item fichier = FILE* : "wrapper" autour d'un descripteur de fichier
+    \item structure sous jacente \_IO\_FILE (dépent des systèmes)
+    \item fopen(3), fclose(3), fread(3), fscanf(3) : ajout d'un buffer
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+
+
+\begin{frame}[containsverbatim]{\sectitle}
+\begin{verbatim}
+typedef struct  {
+  int           level;      /* fill/empty level of buffer */
+  unsigned      flags;      /* File status flags          */
+  char          fd;         /* File descriptor            */
+  unsigned char hold;       /* Ungetc char if no buffer   */
+  int           bsize;      /* Buffer size                */
+  unsigned char *buffer;    /* Data transfer buffer       */
+  unsigned char *curp;      /* Current active pointer     */
+  unsigned      istemp;     /* Temporary file indicator   */
+  short         token;      /* Used for validity checking */
+ } FILE;  
+
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[containsverbatim]{\sectitle}
+\def\subsectitle{Différences}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item open(2), close(2), lseek(2), read(2), write(2)
+    \item fopen(3), fclose(3), fread(3), fscanf(3)
+\end{itemize}
+\end{block}
+
+\def\subsectitle{man man}
+\subsection{\subsectitle}
+\begin{exampleblock}{\subsectitle}
+\begin{verbatim}
+ 1   Executable programs or shell commands
+ 2   System calls (functions provided by the kernel)
+ 3   Library calls (functions within program libraries)
+ 4   Special files (usually found in /dev)
+ 5   File formats and conventions eg /etc/passwd
+ 6   Games
+ 7   Miscellaneous (including macro  packages  and  conven-
+     tions), e.g. man(7), groff(7)
+ 8   System administration commands (usually only for root) ...
+\end{verbatim}
+\end{exampleblock}
+\end{frame}
 
 \end{document}
