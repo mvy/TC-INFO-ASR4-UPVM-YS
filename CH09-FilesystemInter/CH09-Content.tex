@@ -6,7 +6,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \title{Systèmes d'exploitation, 2ème année}
-\subtitle{Fichiers et processus}
+\subtitle{Système de gestion des fichiers - Partie intermédiaire}
 
 \author{Yves \textsc{Stadler}}\institute{Université Paul Verlaine - Metz}
 
@@ -24,46 +24,277 @@
 
 \def\sectitle{Agenda}
 \section{\sectitle}
+
+\begin{frame}{\sectitle}
 \def\subsectitle{Plan du cours}
 \subsection{\subsectitle}
-
-\begin{frame}{\sectitle}
 \begin{block}{\subsectitle}
 \begin{itemize}
-\item Système de gestion des fichiers
-\item Gestion des processus
-\item Gestion de la mémoire
-\item Communication TCP/IP
+    \item Arborescence des fichiers
+    \item Liaison decripteur de fichier avec fichier
+    \item Montages
 \end{itemize}
 \end{block}
 \end{frame}
 
-\def\subsectitle{test}
+\def\sectitle{Liaison avec la partie symbolique}
+\subsection{\sectitle}
+%%Frame
+\begin{frame}[containsverbatim]{\sectitle}
+%%Block
+\def\subsectitle{Organisation connue}
 \subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Nos fichiers sont utilisables grâce aux descripteurs de fichiers
+    \item Nous n'avons toujours pas lié nom de fichier avec le fichier réel
+    \item Les fichiers sont organisés en arborescence
+    \item Répertoire : collections de fichiers (dont répertoires)
+\end{itemize}
+\end{block}
+
+\def\subsectitle{Organisation sur le dique}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+    \begin{itemize}
+        \item Sous unix un fichier est associé à un numéro \textit{i-node}
+        \item La commande \verb+ls -i+ affiche les \textit{i-nodes}
+        \item On verra qu'il existe des tables d'\textit{i-nodes}
+    \end{itemize}
+\end{block}
+
+\end{frame}
 
 
+\def\sectitle{Modifications de l'arborescence}
+\subsection{\sectitle}
+%%Frame
 \begin{frame}{\sectitle}
-\begin{alertblock}{\subsectitle}
+%%Block
+\def\subsectitle{Liens}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
 \begin{itemize}
-\item test 
+    \item On peut créer des liens dans l'arborescence
+    \item Liens symboliques (un nom associé à un autre)
+    \item Liens matériels (plusieurs nom pour une donnée)
 \end{itemize}
-\end{alertblock}
+\end{block}
 
-\begin{exampleblock}{test}
+
+\def\subsectitle{Montage}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+    \begin{itemize}
+        \item Accrocher une arborescence dans une autre arborescence
+        \item Abstraction de partitions
+        \item Raccourcis, accès confinés.
+    \end{itemize}
+\end{block}
+
+\end{frame}
+
+
+%%Frame
+\begin{frame}{\sectitle}
+
+\def\subsectitle{Liens symboliques - Soft links}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+    \begin{itemize}
+        \item Peut pointer sur quelque-chose d'inexistant
+        \item Modifier le contenu du lien revient à modifier le fichier
+        \item Enlever le lien ne détruit pas le fichier
+        \item \textit{i-nodes} différents.
+    \end{itemize}
+\end{block}
+
+\def\subsectitle{Commande}
+\subsection{\subsectitle}
+\begin{exampleblock}{\subsectitle}
+    \begin{itemize}
+        \item ln -s <cible> [<destination>]
+        \item par défaut, répertoire en cours même nom
+    \end{itemize}
+\end{exampleblock}
+\end{frame}
+
+
+%%Frame
+\begin{frame}{\sectitle}
+\def\subsectitle{Liens matériels - hard links}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+    \begin{itemize}
+        \item Doit pointer sur un fichier existant
+        \item Modifier le contenu d'un lien revient à modifier le fichier
+        \item Enlever le lien peut détruire le fichiers
+        \item Notion de nombre de liens pointant sur le fichier
+        \item Un \textit{i-node} unique.
+    \end{itemize}
+\end{block}
+
+
+\def\subsectitle{Commande}
+\subsection{\subsectitle}
+\begin{exampleblock}{\subsectitle}
+    \begin{itemize}
+        \item ln <cible> [<destination>]
+        \item par défaut, répertoire en cours même nom
+    \end{itemize}
+\end{exampleblock}
+\end{frame}
+
+
+%%Frame
+\begin{frame}{\sectitle}
+%%Block
+\def\subsectitle{Liaison entre abstraction et i-node}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
 \begin{itemize}
-\item test
+    \item Une entrée de la table des fichiers ouverts pointe vers un
+        \textit{i-node}
+    \item Elle contient aussi :
+        \begin{itemize}
+            \item Le mode d'ouverture
+            \item L'offset
+        \end{itemize}
 \end{itemize}
+\end{block}
+\end{frame}
 
+
+\def\sectitle{Fonctions systèmes en C}
+\subsection{\sectitle}
+%%Frame
+\begin{frame}[containsverbatim]{\sectitle}
+%%Block
+\def\subsectitle{Création, effacement}
+\subsection{\subsectitle}
+\begin{exampleblock}{\subsectitle}
+\begin{itemize}
+    \item \verb+link(2)+
+    \item \verb+unlink(2)+
+    \item \verb+symlink(2)+
+    \item \verb+rename(2)+
+\end{itemize}
+\end{exampleblock}
+\end{frame}
+
+
+\def\sectitle{Répertoires}
+\subsection{\sectitle}
+%%Frame
+\begin{frame}[containsverbatim]{\sectitle}
+%%Block
+\def\subsectitle{Contenu}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Les répertoires contiennent des fichiers
+    \item En fait, il s'agit d'une liste de (nom, \textit{i-nodes}) 
+\end{itemize}
+\end{block}
+
+\def\subsectitle{Fonctions systèmes en C}
+\subsection{\subsectitle}
+\begin{exampleblock}{\subsectitle}
+    \begin{itemize}
+        \item \verb+mkdir(2)+
+        \item \verb+rmdir(2)+
+    \end{itemize}
+\end{exampleblock}
+\end{frame}
+
+%%Frame
+\begin{frame}[containsverbatim]{\sectitle}
+%%Block
+\def\subsectitle{Manipulation des répertoires}
+\subsection{\subsectitle}
+\begin{exampleblock}{\subsectitle}
+    \begin{itemize}
+        \item \verb+opendir(3)+
+        \item \verb+readdir(3)+
+        \item \verb+rewinddir(3)+
+        \item \verb+closedir(3)+
+    \end{itemize}
 \end{exampleblock}
 
-\begin{block}{test}
-\begin{itemize}
-\item test
-\end{itemize}
-
+\def\subsectitle{Usage}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+    \begin{itemize}
+        \item Une entrée permet de connaître: \textit{i-node}, longueur, type,
+            nom et décalage pour l'entrée suivante
+        \item On rappelle la fonction read pour accéder à l'entrée suivante
+        \item Ces fonctions ne sont pas des appels systèmes. C'est une surcouche
+            provenatn d'une bibliothèque.
+        \item Les appels systèmes sous-jacents sont
+            \verb+open(2),read(2),write(2),close(2)+
+    \end{itemize}
 \end{block}
+\end{frame}
+
+
+\def\sectitle{Montages}
+\subsection{\sectitle}
+%%Frame
+\begin{frame}[containsverbatim]{\sectitle}
+%%Block
+\def\subsectitle{Concept}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Les arboresences peuvent être distinguées en fonctions des supports
+        (windows: un lecteur par disque, clef USB, ...)
+    \item UNIX introduit la notion de montage, qui efface cette notion de
+        support
+    \item Un montage est l'association d'un répertoire à une arborescence
+    \item Le format de l'arborescence montée peut être différente de celui de
+        l'hôte.
+    \item On ne peut monter que des volumes.
+\end{itemize}
+\end{block}
+
+\def\subsectitle{Utilisation}
+\subsection{\subsectitle}
+\begin{exampleblock}{\subsectitle}
+    \begin{itemize}
+        \item \verb+mount(8)+ montage par ligne de commande
+        \item \verb+mount(2)+ montage par programme.
+    \end{itemize}
+\end{exampleblock}
 
 \end{frame}
 
+
+
+%%Frame
+\begin{frame}[containsverbatim]{\sectitle}
+%%Block
+\def\subsectitle{Montages automatiques}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Au démarrage de linux, certains montages peuvent être configurés pour
+        être automatisés. 
+    \item \verb+/etc/fsatb+
+\end{itemize}
+\end{block}
+
+
+\def\subsectitle{Exemple}
+\subsection{\subsectitle}
+\begin{exampleblock}{\subsectitle}
+\begin{verbatim}
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+proc            /proc           proc    nodev,noexec,nosuid 0       0
+# / was on /dev/sda4 during installation 
+UUID=1d0c6490-24c8-4af6-a37c-9605c7546774 / ext4 errors=remount-ro 0 1
+\end{verbatim}
+\end{exampleblock}
+
+\end{frame}
 
 \end{document}
