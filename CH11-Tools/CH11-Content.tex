@@ -6,7 +6,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \title{Systèmes d'exploitation, 2ème année}
-\subtitle{Fichiers et processus}
+\subtitle{Outils utiles}
 
 \author{Yves \textsc{Stadler}}\institute{Université Paul Verlaine - Metz}
 
@@ -30,40 +30,265 @@
 \begin{frame}{\sectitle}
 \begin{block}{\subsectitle}
 \begin{itemize}
-\item Système de gestion des fichiers
-\item Gestion des processus
-\item Gestion de la mémoire
-\item Communication TCP/IP
+    \item Éditeurs de textes
+    \item Gestion des sources
+    \item Utiliser POSIX sur windows
+    \item Utiliser des versions natives des outils GNU sur windows
+    \item Rédaction de texte avec \LaTeX
 \end{itemize}
 \end{block}
 \end{frame}
 
-\def\subsectitle{test}
+\def\sectitle{Éditeurs de textes}
+\section{\sectitle}
+\def\subsectitle{Liste}
 \subsection{\subsectitle}
-
-
 \begin{frame}{\sectitle}
-\begin{alertblock}{\subsectitle}
-\begin{itemize}
-\item test 
-\end{itemize}
-\end{alertblock}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Emacs (GUI, debugger, Lisp, metakeys, très personnalisable)
+            \item (g)Vim (Text, léger, modal, home row)
+            \item Pico
+            \item Nano
+            \item Eclipse (Différentes versions selon les langages, mise-à-jour
+                à la volée, debugger)
+            \item Notepad++
+        \end{itemize}
+    \end{block}
 
-\begin{exampleblock}{test}
-\begin{itemize}
-\item test
-\end{itemize}
+\def\subsectitle{Choix}
+\subsection{\subsectitle}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Fonctionnalités, adaptation, environnement de travail, choix
+                personnel.
+        \end{itemize}
+    \end{block}
+\end{frame}
 
-\end{exampleblock}
 
-\begin{block}{test}
-\begin{itemize}
-\item test
-\end{itemize}
+\def\sectitle{POSIX sous windows}
+\section{\sectitle}
+\def\subsectitle{Unix avec Cygwin}
+\subsection{\subsectitle}
+\begin{frame}{\sectitle}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Apporte les fonctions POSIX comme fork, signals
+            \item Collection d'outils
+            \item cygwin1.dll : couche API Unix pour windows
+            \item Implémente POSIX en terme d'appel Win32
+        \end{itemize}
+    \end{block}
 
-\end{block}
+\def\subsectitle{Cygwin n'est pas}
+\subsection{\subsectitle}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Ne permet pas de compiler sous unix et exécuter sur windows
+            \item Ne permet pas de rendre les applications natives windows au
+                courant des fonctions Unix.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+
+\def\sectitle{GNU sous windows}
+\section{\sectitle}
+\def\subsectitle{MinGW}
+\subsection{\subsectitle}
+\begin{frame}{\sectitle}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Minimalist GNU for Windows
+            \item Collection d'outils GNU (sed, awk, gcc, ...)
+            \item indépendance vis-à-vis de DLL C propriétaire (dépent cependant
+                de DLL windows standard)
+        \end{itemize}
+    \end{block}
+
+\def\subsectitle{MinGW n'est pas}
+\subsection{\subsectitle}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item N'apporte pas une implémentation complète de POSIX
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+
+\def\sectitle{Construction de programmes}
+\section{\sectitle}
+\def\subsectitle{}
+\subsection{\subsectitle}
+\begin{frame}{\sectitle}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Make
+            \item ANT (multi-plateforme, basé sur XML pour java au départ)
+            \item Autotools, génération des scripts standards utilisés dans les
+                projets GNU (./configure, make)
+            \item Cmake (multi-plateforme, multiples outils: make, xcode, visual
+                studio)
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+
+\def\sectitle{Debugger/Profile}
+\section{\sectitle}
+\def\subsectitle{Debuggeur}
+\subsection{\subsectitle}
+\begin{frame}{\sectitle}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item GDB (GNU debuger)
+            \item Insight (GUI GDB)
+            \item DDD (GUI GDB).
+        \end{itemize}
+    \end{block}
+
+
+\def\subsectitle{Profileur}
+\subsection{\subsectitle}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item strace (suivi des appels système)
+            \item ltrace (tracer les appels de librairies dynamiques)
+            \item gprof (GNU profiler, analyse le temps passé dans les
+                fonctions)
+        \end{itemize}
+    \end{block}
 
 \end{frame}
 
+\def\sectitle{Édition de textes avec \LaTeX}
+\section{\sectitle}
+\def\subsectitle{What you see is what you mean}
+\subsection{\subsectitle}
+\begin{frame}{\sectitle}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Distinction totale entre le fond et la forme
+            \item Un fichier .tex décrit le fond (contenu du document) et la
+                structure (je suis un titre de chapitre, je suis un document de
+                type livre, je suis un paragraphe)
+            \item L'entête d'un document \LaTeX permet d'importer les outils de
+                forme (typographie française/anglaise/..., recto ou recto/verso,
+                colonnes, ...)
+            \item Écriture mathématique codifiée et très puissante.
+        \end{itemize}
+    \end{block}
+
+
+\def\subsectitle{Analogie avec la programmation}
+\subsection{\subsectitle}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Le fichier .tex est la source 
+            \item Il est compilé avec un compilateur de documents, exemple
+                pdflatex qui génère des documents PDFs.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+
+\def\subsectitle{Travailler avec \LaTeX}
+\subsection{\subsectitle}
+\begin{frame}{\sectitle}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Un éditeur de texte
+            \item Une distribution \LaTeX (Live-TeX, MikTeX, ...)
+        \end{itemize}
+    \end{block}
+
+
+\def\subsectitle{Pourquoi \LaTeX plutôt que Word}
+\subsection{\subsectitle}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Word fait ce que \LaTeX fait en grande partie
+            \item Word "cache" un certains nombre de concepts de forme
+                (typographie, césures, gestion de styles) que \LaTeX oblige à
+                utiliser (comportement par défaut).
+            \item Les comportements par défaut sont là parce que la rédaction
+                d'un document correct suit des règles de style précis.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+
+\def\sectitle{Contrôle de sources}
+\section{\sectitle}
+\def\subsectitle{Git}
+\subsection{\subsectitle}
+\begin{frame}{\sectitle}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Système distribué de contrôle et révision de source.
+            \item Ne repose pas sur un serveur central (voir svn)
+            \item Travailler à plusieurs sur de grands projets
+        \end{itemize}
+    \end{block}
+
+
+\def\subsectitle{SVN}
+\subsection{\subsectitle}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Système centralisé de contrôle de sources
+            \item Dérivé de CVS
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+
+\def\sectitle{Auto-documentation}
+\section{\sectitle}
+\def\subsectitle{Documentation}
+\subsection{\subsectitle}
+\begin{frame}{\sectitle}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Javadoc: documentation pour les projets Java
+            \item Doxygen: documentation pour les projets C++
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+
+\def\sectitle{Ne pas oublier les outils standards}
+\section{\sectitle}
+\def\subsectitle{Manipulation de texte}
+\subsection{\subsectitle}
+\begin{frame}{\sectitle}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item sed, awk
+            \item Expression rationelle
+            \item Scripts (bash, zsh, ...)
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+
+\def\sectitle{Aide}
+\section{\sectitle}
+\def\subsectitle{Beacoup de sources d'aide avec internet}
+\subsection{\subsectitle}
+\begin{frame}{\sectitle}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Man
+            \item UseNet (serveur de news) en déclin? ou pas... 
+            \item Bibliothèques
+            \item Moteurs de recherches, forums
+            \item Site de l'éditeur
+            \item Stackoverflow (et sites StackExchange)
+            \item Collègues
+        \end{itemize}
+    \end{block}
+\end{frame}
 
 \end{document}
