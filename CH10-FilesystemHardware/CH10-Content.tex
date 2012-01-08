@@ -6,7 +6,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \title{Systèmes d'exploitation, 2ème année}
-\subtitle{Fichiers et processus}
+\subtitle{Système de gestion de fichiers - Partie physique}
 
 \author{Yves \textsc{Stadler}}\institute{Université Paul Verlaine - Metz}
 
@@ -25,45 +25,288 @@
 \def\sectitle{Agenda}
 \section{\sectitle}
 \def\subsectitle{Plan du cours}
-\subsection{\subsectitle}
+\section{\subsectitle}
 
 \begin{frame}{\sectitle}
 \begin{block}{\subsectitle}
 \begin{itemize}
-\item Système de gestion des fichiers
-\item Gestion des processus
-\item Gestion de la mémoire
-\item Communication TCP/IP
+\item Organisation logique du disque: partitions
+\item Organisation physique du disque: blocs
+\item Démarrage
 \end{itemize}
 \end{block}
 \end{frame}
 
-\def\subsectitle{test}
-\subsection{\subsectitle}
 
-
+\def\sectitle{Organisation du disque}
+\section{\sectitle}
 \begin{frame}{\sectitle}
-\begin{alertblock}{\subsectitle}
+
+\def\subsectitle{Subdivisions}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
 \begin{itemize}
-\item test 
+    \item Disque dur composé de secteurs (512 - 16384 bytes)
+    \item de cylindres (20 - 200 secteurs) (pistes situés à même distance de
+        l'axe)
+    \item de plateaux (800 - 4000 cylindres)
 \end{itemize}
-\end{alertblock}
-
-\begin{exampleblock}{test}
-\begin{itemize}
-\item test
-\end{itemize}
-
-\end{exampleblock}
-
-\begin{block}{test}
-\begin{itemize}
-\item test
-\end{itemize}
-
 \end{block}
 
+
+\def\subsectitle{Implications}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+    \begin{itemize}
+        \item Pour optimiser les transferts, on utilise des blocs
+        \item En général, le bloc est de 1KiB
+    \end{itemize}
+\end{block}
 \end{frame}
 
+
+\def\sectitle{Stockage de données}
+\section{\sectitle}
+%%Frame
+\begin{frame}{\sectitle}
+%%Block
+\def\subsectitle{Deux méthodes}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Stockage d'un fichier:
+        \begin{itemize}
+            \item Blocs contigus
+            \item Blocs discontigus
+        \end{itemize}
+\end{itemize}
+\end{block}
+
+
+\def\subsectitle{Avantages/Inconvénients}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+    \begin{itemize}
+        \item Positionnemenent et lecture rapide
+        \item Problème de mise à jour quand le bloc est plein et le suivant
+            occupé
+        \item Problème de la fragmentation lorsque l'on a de l'espace pour
+            stocker un fichier, mais que celui-ci n'est pas continu.
+    \end{itemize}
+\end{block}
+\end{frame}
+
+
+\def\sectitle{Allocations}
+\section{\sectitle}
+%%Frame
+\begin{frame}{\sectitle}
+%%Block
+\def\subsectitle{Allocation chaînée}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Pas de fragmentation externe
+    \item Pas de limite de taille
+    \item Accès direct moins efficace
+    \item Problème de perte de pointeur
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%%Frame
+\begin{frame}{\sectitle}
+%%Block
+\def\subsectitle{Allocation indexée}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Chaque fichier possède un bloc d'index (1er bloc)
+    \item Un enregistrement dans un répertoire pointe sur le bloc d'index
+    \item La ième entrée du bloc d'index pointe sur le ième bloc du fichier
+\end{itemize}
+\end{block}
+
+
+\def\subsectitle{Propriétés}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+    \begin{itemize}
+        \item Taille de la table des index (i-nodes) proportionnelles aux
+            nombres de fichiers
+        \item Fragmentation interne
+        \item Problème de la taille des index
+    \end{itemize}
+\end{block}
+\end{frame}
+
+
+%%Frame
+\begin{frame}{\sectitle}
+%%Block
+\def\subsectitle{Problèmes généraux}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Un bloc ne peut contenir qu'un seul fichier.
+    \item Si le fichier est plus petit que la taille d'un bloc, alors on créer
+        de la fragmentation interne.
+    \item La fragmentation interne est du à un usage inférieur à l'allocation
+        demandée/donnée.
+\end{itemize}
+\end{block}
+
+
+\def\subsectitle{Fragmentations}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+    \begin{itemize}
+        \item Si l'on rempli un espace de 4 unités avec 4 bloc de taille une
+            unité, puis on retire la première et la dernière unité, on se
+            retrouve avec 2 unités de libres
+        \item Si on souhaite remplir l'espace libre avec un bloc de taille 2
+            unités, c'est impossible car on ne dispose pas de cet espace
+            continu.
+        \item La fragmentation externe est l'impossiblité d'utiliser l'espace
+            libre, car il est dispersé en blocs trop petits.
+    \end{itemize}
+\end{block}
+\end{frame}
+
+
+\def\sectitle{Grands fichiers}
+\subsection{\sectitle}
+%%Frame
+\begin{frame}{\sectitle}
+%%Block
+\def\subsectitle{Extension du bloc}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Un fichiers sur plusieurs blocs: on a besoin d'un lien
+    \item Réserver le dernier mot pour pointer sur le bloc suivant
+    \item Multiniveaux: Indexs pointant sur dans indexs pointant sur des blocs
+    \item Combiné: Les premières entrées pointent sur des blocs de données, puis
+        sur des blocs mutlti-niveaux. (UNIX)
+\end{itemize}
+\end{block}
+\end{frame}
+
+\def\sectitle{EXT3}
+\section{\sectitle}
+%%Frame
+\begin{frame}{\sectitle}
+%%Block
+\def\subsectitle{Format ext3 d'UNIX}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Indexé : i-nodes
+    \item Taille des blocs dépends du microprocessuer utilisé
+    \item Maximum bloc de 8KiB
+    \item Taille de la partition maximale : 32TiB si bloc de 8KiB, 16TiB pour
+        bloc de 4KiB, 2TiB si bloc de 1KiB
+    \item Taille maximale de fichier: 2TiB si 8KiB, 2TiB si 4KiB, 16GiB si 1KiB
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\def\sectitle{FAT}
+\section{\sectitle}
+%%Frame
+\begin{frame}{\sectitle}
+%%Block
+\def\subsectitle{Format FAT de windows}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item On parle de cluster en général
+    \item Les clusters sont indexés par un nombre de 32 bits.
+    \item Le secteur de boot utilise un champ de 32 bits pour indexer les
+        secteurs => 2TiB de 512B ou 16TiB de 4096B
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\def\sectitle{}
+\section{\sectitle}
+%%Frame
+\begin{frame}{\sectitle}
+%%Block
+\def\subsectitle{FAT allocation table}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Liste d'entrée qui associe à chaque cluster (groupe de secteurs):
+        \begin{itemize}
+            \item Le prochain cluster
+            \item La fin de la chaîne
+            \item Une marque de cluster corrompu
+            \item Une marque indiquant que le cluster n'est pas utilisé.
+        \end{itemize}
+    \item Table indexée par numéros de blocs
+    \item Une entrée de répertoire contient un pointeur sur le premier bloc.
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\def\sectitle{Secteurs spéciaux}
+\section{\sectitle}
+%%Frame
+\begin{frame}{\sectitle}
+%%Block
+\def\subsectitle{Le premier secteur - secteur de boot}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Non partitionné (ou dans une partition): secteur de boot = 1er secteur (volume boot record)
+    \item Partitionné: secteur de boot = MBR.
+    \item Le MBR défini les partitions. Le premier secteur de la partion est en
+        général le secteur de boot du format (FAT32 par exemple)
+    \item Au démarrage, le PC charge le MBR et l'exécute
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+
+
+%%Frame
+\begin{frame}{\sectitle}
+%%Block
+\def\subsectitle{BPB (FAT, NTFS)}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item BPB (Bios Parameter Block) se situe dans le secteur de boot.
+    \item Donne des informations comme le nombre d'octets par secteurs
+    \item Nombre de secteur par cluster
+    \item Type de disque
+    \item Taille de la FAT
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\def\sectitle{Divers}
+\section{\sectitle}
+%%Frame
+\begin{frame}[containsverbatim]{\sectitle}
+%%Block
+\def\subsectitle{Vérifications des disques}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item Vérification des disques: \verb+chkdsk+ \verb+fsck+
+    \item Un inodes ne peut pas être libre et faire partie d'un fichier
+    \item Parcours des répertoires, vérfication du nombre de liens.
+    \item ...
+\end{itemize}
+\end{block}
+\end{frame}
 
 \end{document}
