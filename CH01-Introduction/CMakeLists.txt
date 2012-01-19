@@ -6,8 +6,8 @@ SET(LATEX_OUTPUT_PATH ../build)
 
 
 ADD_LATEX_DOCUMENT(
-    CH01-Slides.tex MANGLE_TARGET_NAMES
-    INPUTS CH01-Content.tex color-upvmiut.tex
+    CH01-Slides.tex
+    INPUTS CH01-Content.tex ../common/color-udl.tex ../common/TSlides.tex
     IMAGE_DIRS images
     DEFAULT_PDF
     )
