@@ -26,44 +26,37 @@
 \section{\sectitle}
 
 \begin{frame}{\sectitle}
+    \def\subsectitle{Définition}
+    \subsection{\subsectitle}
 
-\def\subsectitle{Définition}
-\subsection{\subsectitle}
+    \begin{alertblock}{\subsectitle}
+        \begin{itemize}
+            \item Entité associée par le noyau à l'exécution d'un programme. Un
+                programme peut être exécuté par un utilisateur et peut avoir
+                plusieurs processus associés.
+        \end{itemize}
+    \end{alertblock}
 
+    \def\subsectitle{Hiérarchie des processus}
+    \subsection{\subsectitle}
 
-\begin{alertblock}{\subsectitle}
-\begin{itemize}
-    \item Entité associée par le noyau à l'exécution d'un programme. Un
-    programme peut être exécuté pare un utilisateur et peut avoir plusieurs
-    processus associés.
-\end{itemize}
-\end{alertblock}
+    \begin{columns}[b]
+        \column{.5\textwidth}
+        \begin{block}{\subsectitle}
+            \begin{itemize}
+                \item Hiérarchie arborescente;
+                \item Relation père-fils;
+                \item Processus \textit{init} (pid: 1), racine;
+                \item \textit{daemon} (cron, mémoire, messagerie, \dots);
+                \item indépendants.
+            \end{itemize}
+        \end{block}
 
-
-
-\def\subsectitle{Hiérarchie des processus}
-\subsection{\subsectitle}
-
-\begin{columns}[b]
-
-\column{.5\textwidth}
-\begin{block}{\subsectitle}
-\begin{itemize}
-    \item Hiérarchie arborescente;
-    \item Relation père-fils;
-    \item Processus \textit{init} (pid: 1), racine;
-    \item \textit{daemon} (cron, mémoire, messagerie, \dots);
-    \item indépendants.
-\end{itemize}
-\end{block}
-
-\column{.3\textwidth}
-\begin{figure}
-\includegraphics[width=\textwidth]{images/PereFils.pdf}
-\end{figure}
-
-\end{columns}
-
+        \column{.3\textwidth}
+        \begin{figure}
+            \includegraphics[width=\textwidth]{images/PereFils.pdf}
+        \end{figure}
+    \end{columns}
 \end{frame}
 
 
@@ -73,6 +66,7 @@
 
 \begin{block}{\subsectitle}
 \begin{itemize}
+    \item Le BIOS lit le MBR
     \item Le noyau est chargé par le \texttt{bootstrapping};
     \item Le noyau va résider en mémoire tant que la machine est allumée.
     \item Au démarrage le noyau exécute le processus \texttt{init} pid 1;
@@ -87,25 +81,36 @@
 \section{\sectitle}
 
 \begin{frame}{\sectitle}
-\def\subsectitle{Deux espaces différents}
+\def\subsectitle{Deux espcaces de mémoire différents}
 \subsection{\subsectitle}
 
 \begin{block}{\subsectitle}
 \begin{itemize}
     \item Espace usager: information du processus, fichiers ouverts, registre
-    \item Espace kernel: fonction de tous les processus en appels système.
+    \item Espace noyau: processus du noyau, drivers
 \end{itemize}
 \end{block}
 
+
+\def\subsectitle{Changement de contexte}
+\subsection{\subsectitle}
+
+\begin{alertblock}{\subsectitle}
+\begin{itemize}
+    \item Stockage et restauration de l'état du processeur pour que l'exécution
+        puisse se terminer à un autre moment.
+\end{itemize}
+\end{alertblock}
 
 \def\subsectitle{Deux contextes différents}
 \subsection{\subsectitle}
 
 \begin{block}{\subsectitle}
 \begin{itemize}
-    \item Processus: le kernel opère pour le compte du processus (appels
-    système);
-    \item Système: le kernel gère les problèmes du système: interruptions
+    \item Utilisateur noyau: le processeur exécute le code du processus.
+    \item Utilisateur - noyau : le noyau opère pour le compte du processus
+        (appels système);
+    \item Système: le noyau gère les problèmes du système: interruptions
     périphérique, \dots
 \end{itemize}
 \end{block}
@@ -129,7 +134,7 @@
 
 \begin{exampleblock}{\subsectitle}
 \begin{itemize}
-    \item Un processus peut se décrire comme une alternance de section actives,
+    \item Un processus peut se décrire comme une alternance de sections actives,
     durant lesquelles des unités de temps CPU sont consommées, avec des attentes
     d'entrées sorties.
 \end{itemize}
@@ -141,7 +146,7 @@
 \begin{block}{\subsectitle}
 \begin{itemize}
     \item Ordonnancement (\textit{scheduling}): choix des processus à activer;
-    \item Distribution (\textit{dispatcher}): activation des processus;
+    \item Distribution (\textit{dispatching}): activation des processus;
     \item Synchronisation: gestion des ressources partagées;
     \item Le \textit{Process Control Block}: structure qui représente l'état
     d'un processus (lorsqu'il n'est pas en mémoire).
@@ -269,8 +274,10 @@
 
 \begin{exampleblock}{\subsectitle}
 \begin{itemize}
-    \item \texttt{malloc()} allocation de mémoire;
-    \item \texttt{free()} libération de la mémoire;
+    \item \texttt{brk()} changement de taille de segment;
+    \item \texttt{mmap()} allocation de mémoire;
+    \item Techniquement on utilisera les appels de bibliothèque \texttt{malloc}
+        et \texttt{free}.
 \end{itemize}
 \end{exampleblock}
 
@@ -296,7 +303,7 @@
         vont être temporairement enlevés de la mémoire centrale (défaut de
         page \dots);
         \item Court terme (Short-term scheduler) : sélectionne le processus qui
-        accède au CPU parmi ceux qui sont prêts (Le dispatcher les activera.).
+        accèdent au CPU parmi ceux qui sont prêts (Le dispatcher les activera.).
     \end{itemize}
 \end{itemize}
 \end{block}
@@ -310,7 +317,7 @@
 
 \begin{block}{\subsectitle}
 \begin{itemize}
-    \item Un ordonnanceur gère plusieurs files d'attentes: 
+    \item Un distributeur gère plusieurs files d'attentes: 
     \begin{itemize}
         \item processus prêts;
         \item processus en attente d'entrée / sortie.
@@ -344,7 +351,7 @@
 \begin{block}{\subsectitle}
 \begin{itemize}
     \item Pas de répartiteur de bas niveau (ou répartiteur trivial)
-    \item Lorsqu'une opération d'entrée sortie est déclenchées, le CPU est
+    \item Lorsqu'une opération d'entrée sortie est déclenchée, le CPU est
     inactif.
 \end{itemize}
 \end{block}
@@ -370,9 +377,9 @@
 \column{.4\textwidth}
 \begin{block}{\subsectitle}
 \begin{itemize}
-    \item Lorsqu'une opération d'entrée sortie est déclenchées, le CPU est
+    \item Lorsqu'une opération d'entrée sortie est déclenchée, le CPU est
     libéré;
-    \item les processus qui termine une entrée sortie sont remis dans la file.
+    \item les processus qui terminent une entrée sortie sont remis dans la file.
 \end{itemize}
 \end{block}
 
@@ -396,7 +403,7 @@
 \begin{block}{\subsectitle}
 \begin{itemize}
     \item Chaque processus dispose d'un certain temps de CPU;
-    \item les processus qui dépasse ce délai sont remis dans la file;
+    \item les processus qui dépassent délai sont remis dans la file;
     \item On appelle quantum de temps la durée maximale allouée à chaque
     processus.
 \end{itemize}
@@ -417,15 +424,6 @@
 \begin{frame}{\sectitle}
 \def\subsectitle{Virtual memory}
 \subsection{\subsectitle}
-
-%\begin{block}{\subsectitle}
-%\begin{itemize}
-%    \item Chaque processus dispose d'un certain temps de CPU;
-%    \item les processus qui dépasse ce délai sont remis dans la file;
-%    \item On appelle quantum de temps la durée maximale allouée à chaque
-%    processus.
-%\end{itemize}
-%\end{block}
 
 \begin{figure}
 \includegraphics[width=.7\textwidth]{images/virtualmemoryDispatching.pdf}
@@ -478,7 +476,7 @@
     \item maximiser:
     \begin{itemize}
         \item Le taux d'activité du CPU;
-        \item Le nombre de processus traités par unités de temps.
+        \item Le nombre de processus traités par unité de temps.
     \end{itemize}
 \end{itemize}
 \end{block}
@@ -516,7 +514,7 @@
 
 \begin{block}{\subsectitle}
 \begin{itemize}
-    \item Principe d'une file standard, les éléments rentre à la suite de tous
+    \item Principe d'une file standard, les éléments rentrent à la suite de tous
     les processus déjà présents;
     \item Le processus qui n'a plus de prédécesseur est la tête de la file et
     est élu à la prochaine sélection.
@@ -613,7 +611,7 @@
 \begin{itemize}
     \item Meilleur que FIFO car les processus se terminent plus vite (pas de
     blocage pour un seul processus);
-    \item Meilleur que SJF car les processus longs ne sont plus pénaliser;
+    \item Meilleur que SJF car les processus longs ne sont plus pénalisés;
     \item Le temps d'attente dépend du nombre de processus;
     \item Famine impossible;
     \item Difficilement exploitable en temps-réel (deadlines).
@@ -628,8 +626,8 @@
 
 \begin{alertblock}{\subsectitle}
 \begin{itemize}
-    \item Trop court: important changement de contexte qui pénalise l'efficacité
-    du système;
+    \item Trop court: importants changements de contexte qui pénalisent
+        l'efficacité du système;
     \item Trop long: les processus court sont pénalisés;
     \item Infini : on a une FIFO;
     \item Unix utilise 100ms.
@@ -642,69 +640,48 @@
 \def\sectitle{Files multiples}
 \section{\sectitle}
 \begin{frame}{\sectitle}
-\def\subsectitle{Principe}
-\subsection{\subsectitle}
+    \def\subsectitle{Principe}
+    \subsection{\subsectitle}
 
-\begin{block}{\subsectitle}
-\begin{itemize}
-    \item Division en groupe de processus (système, professeurs, étudiant, avant
-    plan, arrière-plan, \dots);
-    \item Différentes priorités par files (éventuellement quantum différents
-    aussi).
-\end{itemize}
-\end{block}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Division en groupe de processus (système, professeurs,
+                étudiant, avant plan, arrière-plan, \dots);
+            \item Différentes priorités par files (éventuellement quantum
+                différents aussi).
+        \end{itemize}
+    \end{block}
 
 
-\def\subsectitle{Caractérisiques}
-\subsection{\subsectitle}
-\begin{block}{\subsectitle}
-\begin{itemize}
-    \item Adapté à des contraintes particulières;
-    \item Priorité en fonction de l'importance des travaux (de manière
-    \textit{meta})
-    \item Généralement utile pour privilégier les processus dépendant d'entrées
-    sorties;
-    \item Un processus qui quitte volontairement l'UC garde sa file;
-    \item Lors des dépassements de quantum, on change le processus de file
-    (perte de priorité au profit d'un quantum plus long).
-\end{itemize}
-\end{block}
-
+    \def\subsectitle{Caractérisiques}
+    \subsection{\subsectitle}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Adapté à des contraintes particulières;
+            \item Priorité en fonction de l'importance des travaux (de manière
+                \textit{meta})
+            \item Généralement utile pour privilégier les processus dépendant
+                d'entrées sorties;
+            \item Un processus qui quitte volontairement l'UC garde sa file;
+            \item Lors des dépassements de quantum, on change le processus de
+                file (perte de priorité au profit d'un quantum plus long).
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{\sectitle}
-\begin{figure}
-
-\includegraphics[width=\textwidth]{images/multipleFiles.pdf}
-\end{figure}
-
+    \begin{figure}
+        \includegraphics[width=\textwidth]{images/multipleFiles.pdf}
+    \end{figure}
 \end{frame}
 
 
 \begin{frame}{\sectitle}
-\begin{figure}
-\includegraphics[width=\textwidth]{images/multipleFilesQt.pdf}
-\end{figure}
-
-
-
-
-\end{frame}
-
-\def\sectitle{Fin}
-\section{\sectitle}
-
-\begin{frame}{\sectitle}
-\def\subsectitle{Suite}
-\subsection{\subsectitle}
-
-\begin{exampleblock}{\subsectitle}
-\begin{itemize}
-    \item TD: Processus et ordonnancement.
-\end{itemize}
-\end{exampleblock}
-
+    \begin{figure}
+        \includegraphics[width=\textwidth]{images/multipleFilesQt.pdf}
+    \end{figure}
 \end{frame}
 
 
 \end{document}
+% vim:spell:spl=fr:
