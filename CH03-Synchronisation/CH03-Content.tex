@@ -1,10 +1,3 @@
-%%%%\%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Introduction aux Systèmes d'exploitation  %%
-%%   * Historique                            %%
-%%   * Principes fondamentaux                %%
-%%   * Grandes classes de systèmes           %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \title{Systèmes d'exploitation, 2ème année}
 \subtitle{Méthodes de synchronisation}
 
@@ -31,13 +24,13 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{\sectitle}
-\begin{block}{\subsectitle}
-\begin{itemize}
-\item Pourquoi la synchronisation
-\item Problèmes de synchronisation
-\item Solutions de synchronisation
-\end{itemize}
-\end{block}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Pourquoi la synchronisation
+            \item Problèmes de synchronisation
+            \item Solutions de synchronisation
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 
@@ -47,60 +40,61 @@
 \def\subsectitle{Pourquoi synchroniser}
 \subsection{\subsectitle}
 \begin{frame}{\sectitle}
-\begin{block}{\subsectitle}
-\begin{itemize}
-    \item Hors du cadre temps réel
-    \item Les ressources sont limités et ne peuvent/doivent pas être utilisées 
-    en même temps;
-    \item Éviter l'instabilité du système/programme résultant d'un mauvais usage
-    des ressources partagées.
-\end{itemize}
-\end{block}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Hors du cadre temps réel
+            \item Les ressources sont limités et ne peuvent/doivent pas être
+                utilisées en même temps;
+            \item Éviter l'instabilité du système/programme résultant d'un
+                mauvais usage des ressources partagées.
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\sectitle{Race conditions}
 \section{\sectitle}
 \begin{frame}[containsverbatim]{\sectitle}
-\begin{block}{\subsectitle}
-\begin{itemize}
-    \item L'ordonnancement peut arrêter un processus pendant son exécution;
-    \item Processus plus prioritaire, quantum expiré, ...
-\end{itemize}
-\end{block}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item L'ordonnancement peut arrêter un processus pendant son
+                exécution;
+            \item Processus plus prioritaire, quantum expiré, ...
+        \end{itemize}
+    \end{block}
 
-\begin{columns}[b]
+    \begin{columns}[b]
 
-\column{.5\textwidth}
-\def\subsectitle{Processus 1}
-\subsection{\subsectitle}
-\begin{exampleblock}{\subsectitle}
-\begin{verbatim}
-x++; 
-y = x;
-\end{verbatim}
-\end{exampleblock}
+        \column{.5\textwidth}
+        \def\subsectitle{Processus 1}
+        \subsection{\subsectitle}
+        \begin{exampleblock}{\subsectitle}
+            \begin{verbatim}
+                x++; 
+                y = x;
+            \end{verbatim}
+        \end{exampleblock}
 
-\column{.5\textwidth}
+        \column{.5\textwidth}
 
-\def\subsectitle{Processus 2}
-\subsection{\subsectitle}
-\begin{exampleblock}{\subsectitle}
-\begin{verbatim}
-x++; 
-z = x;
-\end{verbatim}
-\end{exampleblock}
+        \def\subsectitle{Processus 2}
+        \subsection{\subsectitle}
+        \begin{exampleblock}{\subsectitle}
+            \begin{verbatim}
+                x++; 
+                z = x;
+            \end{verbatim}
+        \end{exampleblock}
 
-\end{columns}
+    \end{columns}
 
-\def\subsectitle{Quel résultat}
-\subsection{\subsectitle}
-\begin{block}{\subsectitle}
-\begin{itemize}
-    \item Selon l'ordre d'exécution, les résultats seront différents.
-\end{itemize}
-\end{block}
+    \def\subsectitle{Quel résultat}
+    \subsection{\subsectitle}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Selon l'ordre d'exécution, les résultats seront différents.
+        \end{itemize}
+    \end{block}
 
 \end{frame}
 
@@ -163,20 +157,6 @@ P1: y = x; // y == 2
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\def\sectitle{Autre exemple}
-\section{\sectitle}
-\begin{frame}[containsverbatim]{\sectitle}
-\begin{exampleblock}{\subsectitle}
-\begin{verbatim}
-next = next_available;
-*next = something;
-next_available++;
-\end{verbatim}
-\end{exampleblock}
-\end{frame}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\sectitle{Constatations}
 \section{\sectitle}
 \def\subsectitle{Inconsistance}
@@ -209,33 +189,36 @@ next_available++;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\sectitle{Section critique}
 \section{\sectitle}
-\begin{frame}{\sectitle}
-\begin{block}{\subsectitle}
-\begin{itemize}
-\item On définit des zones de programmes pendant lesquelles les autres processus
-ne doivent pas utiliser la ressource partagée.
-\item Le programme en section critique à le contrôle exclusif de la ressource.
-\end{itemize}
-\end{block}
-
-\def\subsectitle{Comment mettre en {\oe}uvre}
+\def\subsectitle{Définition}
 \subsection{\subsectitle}
-\begin{block}{\subsectitle}
-\begin{itemize}
-\item Masquer les interruptions
-\item Utiliser des variables pour signaler un verrouillage
-\item Alternance des processus sur une ressource
-\item Moyens matériels
-\item Sémaphores.
-\end{itemize}
-\end{block}
+\begin{frame}{\sectitle}
+    \begin{alertblock}{\subsectitle}
+        \begin{itemize}
+            \item On définit des zones de programmes pendant lesquelles les
+                autres processus ne doivent pas utiliser la ressource partagée.
+            \item Le programme en section critique a le contrôle exclusif de la
+                ressource.
+        \end{itemize}
+    \end{alertblock}
+
+    \def\subsectitle{Comment mettre en {\oe}uvre}
+    \subsection{\subsectitle}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Masquer les interruptions
+            \item Utiliser des variables pour signaler un verrouillage
+            \item Alternance des processus sur une ressource
+            \item Moyens matériels
+            \item Sémaphores.
+        \end{itemize}
+    \end{block}
 
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\sectitle{Solutions}
 \section{\sectitle}
-\def\subsectitle{Exclusion mutuelle}
+\def\subsectitle{Masquage de interruptions}
 \subsection{\subsectitle}
 \begin{frame}{\sectitle}
 \begin{block}{\subsectitle}
@@ -247,6 +230,8 @@ ne doivent pas utiliser la ressource partagée.
 \end{itemize}
 \end{block}
 
+\def\subsectitle{Problèmes}
+\subsection{\subsectitle}
 \begin{block}{\subsectitle}
 \begin{itemize}
 \item Ne fonctionne que pour les architecture mono-processeur;
@@ -256,42 +241,50 @@ ne doivent pas utiliser la ressource partagée.
 \end{frame}
 
 \begin{frame}{\sectitle}
-\def\subsectitle{Variable de verrouillage}
-\subsection{\subsectitle}
-\begin{block} {\subsectitle}
-\begin{itemize}
-\item Chaque ressource est associé à un variable qui indique si elle est libre
-ou occupée
-\item Les processus consulte cette variable avant d'utiliser la ressource
-\end{itemize}
-\end{block} 
+    \def\subsectitle{Variable de verrouillage}
+    \subsection{\subsectitle}
+    \begin{block} {\subsectitle}
+        \begin{itemize}
+            \item Chaque ressource est associée à un variable qui indique si
+                elle est libre ou occupée
+            \item Les processus consultent cette variable avant d'utiliser la
+                ressource
+        \end{itemize}
+    \end{block} 
 
-\begin{block}{\subsectitle}
-\begin{itemize}
-\item La race condition est déplacée sur la variable de verrouillage
-    \item Problème de l'atomicité des opérations, le processus peut-être
-    interrompu entre le test de la variable et l'accès à la ressource.
-\end{itemize}
-\end{block}
+    \def\subsectitle{Problèmes}
+    \subsection{\subsectitle}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item La race condition est déplacée sur la variable de verrouillage
+            \item Problème de l'atomicité des opérations, le processus peut-être
+                interrompu entre le test de la variable et l'accès à la
+                ressource.
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}[containsverbatim]{\sectitle}
-\begin{exampleblock}{\subsectitle}
-\begin{verbatim}
+    \def\subsectitle{Code}
+    \subsection{\subsectitle}
+    \begin{exampleblock}{\subsectitle}
+        \begin{verbatim}
 while(resource_status == BUSY)
-    ;
+;
 resource_status = BUSY;
 //Critical section
 resource_status = FREE;
-\end{verbatim}
-\end{exampleblock}
+        \end{verbatim}
+    \end{exampleblock}
 
-\begin{alertblock}{\subsectitle}
-\begin{itemize}
-\item Réquisition entre le test \texttt{while} et la ligne suivante
-\end{itemize}
-\end{alertblock}
+    \def\subsectitle{Problèmes}
+    \subsection{\subsectitle}
+    \begin{alertblock}{\subsectitle}
+        \begin{itemize}
+            \item Réquisition entre le test \texttt{while} et la ligne suivante
+        \end{itemize}
+    \end{alertblock}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\sectitle{Test set and Lock}
@@ -299,22 +292,24 @@ resource_status = FREE;
 \def\subsectitle{Instruction TSL}
 \subsection{\subsectitle}
 \begin{frame}[containsverbatim]{\sectitle}
-\begin{block}{\subsectitle}
-\begin{itemize}
-    \item Test Set and Lock
-    \item L'instruction garantit l'atomicité de l'opération de test et
-    d'affectation.
-    \item 0: bloqué, 1: libre.
-\end{itemize}
-\end{block}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Test Set and Lock
+            \item L'instruction garantit l'atomicité de l'opération de test et
+                d'affectation.
+            \item 0: bloqué, 1: libre.
+        \end{itemize}
+    \end{block}
 
-\begin{block}{\subsectitle}
-\begin{itemize}
-\item Perte de temps CPU
-\item Inversion de priorité
-\item Une fois qu'un processus est prêt il doit être élu.
-\end{itemize}
-\end{block}
+    \def\subsectitle{Problèmes}
+    \subsection{\subsectitle}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Perte de temps CPU
+            \item Inversion de priorité
+            \item Une fois qu'un processus est prêt il doit être élu.
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -338,22 +333,22 @@ quit:
 \def\subsectitle{Autres méthodes}
 \subsection{\subsectitle}
 \begin{frame}{\sectitle}
-\begin{block}{\subsectitle}
-\begin{itemize}
-\item Méthode de l'alternance
-\item Algorithme de Dekker
-\item Algorithme de Peterson
-\end{itemize}
-\end{block}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Méthode de l'alternance
+            \item Algorithme de Dekker
+            \item Algorithme de Peterson
+        \end{itemize}
+    \end{block}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\sectitle{Alternance}
 \section{\sectitle}
 \begin{frame}[containsverbatim]{\sectitle}
-\def\subsectitle{Alternance version 1}
-\subsection{\subsectitle}
-\begin{exampleblock}{\subsectitle}
-\begin{verbatim}
+    \def\subsectitle{Alternance version 1}
+    \subsection{\subsectitle}
+    \begin{exampleblock}{\subsectitle}
+        \begin{verbatim}
 while(turn != t)
     ;
 //Critical section
@@ -362,38 +357,40 @@ turn = 1 - t; //1 or 0
 \end{exampleblock}
 
 \begin{alertblock}{\subsectitle}
-\begin{itemize}
-    \item Si un processus à plus de tâches que l'autre
-    \item Si un processus à une plus grande priorité que l'autre
-    \item Risque de blocage
-\end{itemize}
+    \begin{itemize}
+        \item Si un processus à plus de tâches que l'autre
+        \item Si un processus à une plus grande priorité que l'autre
+        \item Risque de blocage
+    \end{itemize}
 \end{alertblock}
 \end{frame}
 
 \def\sectitle{Dekker's algorithm}
 \section{\sectitle}
 \begin{frame}[containsverbatim]{\sectitle}
-\def\subsectitle{Alternance version 2}
-\subsection{\subsectitle}
+    \def\subsectitle{Alternance version 2}
+    \subsection{\subsectitle}
 
-\begin{exampleblock}{\subsectitle}
-\begin{verbatim}
+    \begin{exampleblock}{\subsectitle}
+        \begin{verbatim}
 (flag[0] = false; flag[1] = false; other = 1 -t;) //init
 flag[t] = true;
 while(flag[other])
-    ;
+;
 //Critical section
 flag[t] = false;
-\end{verbatim}
-\end{exampleblock}
+        \end{verbatim}
+    \end{exampleblock}
 
-\begin{alertblock}{\subsectitle}
-\begin{itemize}
-    \item Si un processus à plus de tâches que l'autre
-    \item Si un processus à une plus grande priorité que l'autre
-    \item Risque de blocage
-\end{itemize}
-\end{alertblock}
+    \def\subsectitle{Problèmes}
+    \subsection{\subsectitle}
+    \begin{alertblock}{\subsectitle}
+        \begin{itemize}
+            \item Si un processus à plus de tâches que l'autre
+            \item Si un processus à une plus grande priorité que l'autre
+            \item Risque de blocage
+        \end{itemize}
+    \end{alertblock}
 
 \end{frame}
 
@@ -402,47 +399,47 @@ flag[t] = false;
 \def\sectitle{Peterson}
 \section{\sectitle}
 \begin{frame}[containsverbatim]{\sectitle}
-\def\subsectitle{Peterson's algorithm}
-\subsection{\subsectitle}
-\begin{exampleblock}{\subsectitle}
-\begin{verbatim}
+    \def\subsectitle{Peterson's algorithm}
+    \subsection{\subsectitle}
+    \begin{exampleblock}{\subsectitle}
+        \begin{verbatim}
 int other = i -t;
 flag[t] = true; // Process interessted in CS
 turn = other;
 while((flag[other] == true) && (turn == other))
-    ;
+;
 //CS
 flag[t] = false;
-\end{verbatim}
-\end{exampleblock}
+        \end{verbatim}
+    \end{exampleblock}
 
 
-\begin{alertblock}{\subsectitle}
-\begin{itemize}
-    \item Si tous intéressés: chacun son tour
-    \item Si un processus n'est pas intéressé, il ne fait participe pas au choix
-    du processus qui va entrer en section critique;
-    \item L'attente est bornée
-\end{itemize}
-\end{alertblock}
+    \def\subsectitle{Problèmes et avantages}
+    \subsection{\subsectitle}
+    \begin{alertblock}{\subsectitle}
+        \begin{itemize}
+            \item Si tous intéressés: chacun son tour
+            \item Si un processus n'est pas intéressé, il ne fait participe pas
+                au choix du processus qui va entrer en section critique;
+            \item L'attente est bornée
+        \end{itemize}
+    \end{alertblock}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\sectitle{Les problèmes classiques}
 \section{\sectitle}
 \begin{frame}{\sectitle}
-\def\subsectitle{Lecteurs - rédacteurs}
-\subsection{\subsectitle}
-\begin{block}{\subsectitle}
-\begin{itemize}
-    \item Producteurs et consommateurs
-    \item Des processus partagent une base
-    \item Les lecteurs peuvent partager une même données
-    \item Les rédacteurs doivent gérer l'accès.
-\end{itemize}
-\end{block}
-
-
+    \def\subsectitle{Lecteurs - rédacteurs}
+    \subsection{\subsectitle}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Producteurs et consommateurs
+            \item Des processus partagent une base
+            \item Les lecteurs peuvent partager une même données
+            \item Les rédacteurs doivent gérer l'accès.
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -450,44 +447,50 @@ flag[t] = false;
 \section{\sectitle}
 \begin{frame}[containsverbatim]{\sectitle}
 
-\begin{columns}[t]
-\column{.5\textwidth}
-\begin{exampleblock}{\subsectitle}
-\begin{verbatim}
+    \begin{columns}[t]
+        \column{.5\textwidth}
+        \def\subsectitle{Producteur}
+        \subsection{\subsectitle}
+        \begin{exampleblock}{\subsectitle}
+            \begin{verbatim}
 while(count == SIZE)
-    ;
+;
 ++count;
 buffer[in_curs] = I;
 in_curs = (in_curs+1) % SIZE;
-\end{verbatim}
-\end{exampleblock}
+            \end{verbatim}
+        \end{exampleblock}
 
-\column{.5\textwidth}
-\begin{exampleblock}{\subsectitle}
-\begin{verbatim}
+        \column{.5\textwidth}
+        \def\subsectitle{Consommateur}
+        \subsection{\subsectitle}
+        \begin{exampleblock}{\subsectitle}
+            \begin{verbatim}
 while(count == 0)
-    ;
+;
 --count;
 I = buffer[out_curs];
 out_curs = (out_curs+1)%SIZE;
-\end{verbatim}
-\end{exampleblock}
-\end{columns}
+            \end{verbatim}
+        \end{exampleblock}
+    \end{columns}
 
 \end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{\sectitle}
-\begin{block}{\subsectitle}
-\def\subsectitle{Les philosophes}
-\subsection{\subsectitle}
-\begin{itemize}
-\item Les philosophes mangent ou pensent.
-\item Pour manger il a besoin de deux baguettes (une à droite, une à gauche);
-\item Comment faire manger les philosophes? (1 philosophe = 1 processus)
-\end{itemize}
-\end{block}
+    \begin{block}{\subsectitle}
+        \def\subsectitle{Les philosophes}
+        \subsection{\subsectitle}
+        \begin{itemize}
+            \item Les philosophes mangent ou pensent.
+            \item Pour manger il a besoin de deux baguettes (une à droite, une à
+                gauche);
+            \item Comment faire manger les philosophes? (1 philosophe = 1
+                processus)
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -512,15 +515,15 @@ while(true) {
 \def\sectitle{Problèmes classiques}
 \section{\sectitle}
 \begin{frame}{\sectitle}
-\def\subsectitle{Le barbier}
-\subsection{\subsectitle}
-\begin{block}{\subsectitle}
-\begin{itemize}
-\item N chaises, 1 barbier
-\item Le client s'installe s'il y a une chaise libre, sinon il repart
-\item Problème: faire que le barbier serve les client de manière juste.
-\end{itemize}
-\end{block}
+    \def\subsectitle{Le barbier}
+    \subsection{\subsectitle}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item N chaises, 1 barbier
+            \item Le client s'installe s'il y a une chaise libre, sinon il repart
+            \item Problème: faire que le barbier serve les client de manière juste.
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 
@@ -532,7 +535,7 @@ while(true) {
 \subsection{\subsectitle}
 \begin{block}{\subsectitle}
 \begin{itemize}
-    \item Actuellement nous avons de l'attente active (\texttt{while(...);}
+    \item Actuellement nous avons de l'attente active (\texttt{while(...);})
     \item Primitives \texttt{sleep()} et \texttt{wakeup()}
     \item Quand on a rien à faire: \texttt{sleep()}
     \item Cela libère le processeur,
@@ -617,10 +620,10 @@ test.
 \begin{block}{\subsectitle}
 \begin{itemize}
 \item Un sémaphore est une variable de contrôle d'accès
-\item Il indique le nombre d'éléments disponible
+\item Il indique le nombre d'éléments disponibles
 \item Il tient à jour une liste de processus bloqués qui attendent l'accès à
 cette ressources
-\item S'il la disponibilité de la ressource ne dépasse pas 1, mutex (sémaphore
+\item Si la disponibilité de la ressource ne dépasse pas 1, mutex (sémaphore
 binaire)
 \item >0 : ressources dispo; <0: nombre de processus bloqués.
 \item Fonctions P(roberen) et V(erhogen).
