@@ -1,14 +1,7 @@
-%%%%\%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Introduction aux Systèmes d'exploitation  %%
-%%   * Historique                            %%
-%%   * Principes fondamentaux                %%
-%%   * Grandes classes de systèmes           %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \title{Systèmes d'exploitation, 2ème année}
 \subtitle{Mémoires}
 
-\author{Yves \textsc{Stadler}}\institute{Université Paul Verlaine - Metz}
+\author{Yves \textsc{Stadler}}\institute{Université de Lorraine - Metz}
 
 \date{\today}
 
@@ -145,25 +138,83 @@
 \def\sectitle{Allocation continue}
 \section{\sectitle}
 \begin{frame}{\sectitle}
+    \def\subsectitle{Principe}
+    \subsection{\subsectitle}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Un seul processus en mémoire à un instant donné
+            \item Très bien pour les architecture mono-programmation
+            \item Pour les autres, il faut partager la mémoire vive
+        \end{itemize}
+    \end{block}
+
+    \def\subsectitle{Une seule mémoire}
+    \subsection{\subsectitle}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Le système peut-être en bas de la mémoire (adresse 0)
+            \item Le système peut-être en haut mémoire en ROM.
+            \item À l'exécution, le programme est copié dans la mémoire
+            \item Le système reprend la main après l'exécution.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+
+\def\sectitle{Partitions fixes}
+\section{\sectitle}
+\begin{frame}{\sectitle}
 \def\subsectitle{Principe}
 \subsection{\subsectitle}
 \begin{block}{\subsectitle}
 \begin{itemize}
-    \item Un seul processus en mémoire à un instant donné
-    \item Très bien pour les architecture mono-programmation
-    \item Pour les autres, il faut utiliser le swap
+    \item On découpe la mémoire en partition de différentes tailles
+    \item Un programme se voit affecter la zone la plus petite possible
+    \item Lorsqu'impossible, on utilise des files d'attente
+    \item Une file par partition, ou une file globale
 \end{itemize}
 \end{block}
-\def\subsectitle{Swap}
+
+\def\subsectitle{Avantages et inconvénients}
 \subsection{\subsectitle}
 \begin{block}{\subsectitle}
 \begin{itemize}
-    \item Swap: alternance de la présence de donnée en mémoire centrale
-    \item Swap-in: Chargement de la mémoire d'un processus en mémoire centrale
-    \item Swap-out: Déchargement de la mémoire d'un processus (généralement en
-    mémoire cache, ou sur disque)
+    \item Files multiples: beaucoup d'attente sur petites partitions, mais file
+        vide sur grandes partitions
+    \item File globale: quand une partition est disponible, on prend la première
+        tâche qui rentre. 
+    \item File globale: quand une partition est disponible, on prend la plus
+        grande tâche qui rentre. 
 \end{itemize}
 \end{block}
+\end{frame}
+
+
+\begin{frame}{\sectitle}
+    \def\subsectitle{Autres méthodes}
+    \subsection{\subsectitle}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Swapping : chargement et déchargement des programmes en
+                mémoire
+            \item Mémoire virtuelle: un programme peut s'exécuté avec seulement
+                une partie de sa mémoire chargée.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{\sectitle}
+    \def\subsectitle{Swapping}
+    \subsection{\subsectitle}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Swap: alternance de la présence de donnée en mémoire centrale
+            \item Swap-in: Chargement de la mémoire d'un processus en mémoire
+                centrale
+            \item Swap-out: Déchargement de la mémoire d'un processus
+                (généralement en mémoire cache, ou sur disque)
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \def\sectitle{Partage mémoire}
@@ -210,6 +261,20 @@
 \begin{itemize}
     \item Les adresses physiques peuvent changer!
     \item Il faut tenir à jour une correspondance des adresses.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{\sectitle}
+\def\subsectitle{Mémoire virtuelle}
+\subsection{\subsectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+    \item La mémoire d'un programme est découpée en segments 
+    \item Il faut tenir à jour une correspondance des adresses.
+    \item Seulement une partie est en mémoire à un moment donnée
+    \item En remplace ensuite la partie qui n'est plus utilisée par le reste de
+        la mémoire à charger.
 \end{itemize}
 \end{block}
 \end{frame}
