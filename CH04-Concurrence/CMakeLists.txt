@@ -12,10 +12,3 @@ ADD_LATEX_DOCUMENT(
     DEFAULT_PDF
     )
 
-ADD_LATEX_DOCUMENT(
-    CH04-Handout.tex MANGLE_TARGET_NAMES
-    INPUTS CH04-Content.tex
-    IMAGE_DIRS images
-    DEFAULT_PDF
-    )
-
