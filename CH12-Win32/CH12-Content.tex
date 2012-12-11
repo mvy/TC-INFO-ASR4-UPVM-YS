@@ -19,52 +19,42 @@
 \section{\sectitle}
 
 \begin{frame}{\sectitle}
-    \def\subsectitle{Appels systèmes windows}
+    \def\subsectitle{Différence}
     \subsection{\subsectitle}
 
     \begin{block}{\subsectitle}
         \begin{itemize}
             \item UNIX est plutôt impératif
             \item Windows est plutôt guidé par les événements
+            \item Attente d'un événement, appel d'une procédure
+            \item UNIX: minimum / Win32: compréhensible
         \end{itemize}
     \end{block}
 
-    \def\subsectitle{Hiérarchie des processus}
+    \def\subsectitle{Appels systèmes windows}
     \subsection{\subsectitle}
 
-    \begin{columns}[b]
-        \column{.5\textwidth}
         \begin{block}{\subsectitle}
             \begin{itemize}
-                \item Hiérarchie arborescente;
-                \item Relation père-fils;
-                \item Processus \textit{init} (pid: 1), racine;
-                \item \textit{daemon} (cron, mémoire, messagerie, \dots);
-                \item indépendants.
+                \item Appels à l'API win32
+                \item Fonctions découplées de l'appel système
+                \item Flexibilité pour changer les appels systèmes
+                \item Des fonctions utilisent l'espace utilisateur
             \end{itemize}
         \end{block}
-
-        \column{.3\textwidth}
-        \begin{figure}
-            \includegraphics[width=\textwidth]{images/PereFils.pdf}
-        \end{figure}
-    \end{columns}
 \end{frame}
 
 
 \begin{frame}{\sectitle}
-\def\subsectitle{Initialisation}
+\def\subsectitle{Objet du noyau}
 \subsection{\subsectitle}
 
 \begin{block}{\subsectitle}
 \begin{itemize}
-    \item Le BIOS lit le MBR
-    \item Le noyau est chargé par le \texttt{bootstrapping};
-    \item Le noyau va résider en mémoire tant que la machine est allumée.
-    \item Au démarrage le noyau exécute le processus \texttt{init} pid 1;
-    \item \texttt{init} lit \texttt{/dev/tty} qui décrit les terminaux;
-    \item \texttt{init} créer un fils pour chaque terminal et se met en veille;
-    \item chaque fils exécute le programme \texttt{login}.
+    \item Un appel peut créer un objet dans le noyau
+    \item Manipulation avec un "handle"
+    \item Ne fonctionne que pour un processus
+    \item Beaucoup de fonctions
 \end{itemize}
 \end{block}
 \end{frame}
